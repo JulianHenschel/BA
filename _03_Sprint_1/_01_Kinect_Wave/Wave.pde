@@ -8,6 +8,7 @@ class Wave {
   int[]      activeTime = new int[steps];
   boolean[]  active = new boolean[steps];
   color[]    col = new color[steps];
+  float[]    stepWidth = new float[steps];
   
   Wave() {
         
@@ -18,6 +19,7 @@ class Wave {
       activeSpeed[i] = 0;
       active[i] = false;
       col[i] = color(random(0,255),random(0,255),random(0,255));
+      stepWidth[i] = random(-(width/steps)*2,(width/steps)*2);
       
     }
   }
@@ -26,12 +28,11 @@ class Wave {
     
     if( (step < steps) && (step >= 0) ) 
     {
-      
       active[step] = true;
       activeTime[step] = 0;
       activeSpeed[step] = 5;
       
-    } else 
+    }else 
     {
       println("step error: "+step);  
     }
@@ -75,10 +76,11 @@ class Wave {
       rectMode(CENTER);
       ellipseMode(CENTER);
       
-      fill(col[index]);
+      fill(col[index],200);
       noStroke(); 
 
       //rect(i,0,s,stepHeight); 
+      rect(i,0,s+(stepWidth[index]),stepHeight); 
             
       popMatrix();
       
