@@ -1,11 +1,14 @@
 import processing.opengl.*;
 import processing.pdf.*;
+import processing.video.*;
 import SimpleOpenNI.*;
 
 SimpleOpenNI context;
+MovieMaker   mm;
 
 ArrayList    wList;
 boolean      dosave = false;
+boolean      makeMovie = false;
 
 float        zoomF = 0.5f;
 float        rotX = radians(180);
@@ -27,10 +30,17 @@ void setup() {
   
   /* ---------------------------------------------------------------------------- */
   
+  if(makeMovie)
+  {
+    mm = new MovieMaker(this, width, height, "drawing.mov", 30, MovieMaker.ANIMATION, MovieMaker.HIGH);
+  }
+  
+  /* ---------------------------------------------------------------------------- */
+  
   context = new SimpleOpenNI(this);
    
   context.setMirror(false);
-
+  
   // enable depthMap generation 
   if(context.enableDepth() == false)
   {
@@ -44,8 +54,6 @@ void setup() {
   
   // enable the scene, to get the floor
   context.enableScene();
-
-  /* ---------------------------------------------------------------------------- */
   
 }
 
@@ -53,14 +61,12 @@ void draw() {
   
   /* ---------------------------------------------------------------------------- */
   
-  if(dosave) {
+  if(dosave) 
+  {
 
     PGraphicsPDF pdf = (PGraphicsPDF)beginRaw(PDF, "output/"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf"); 
 
-    //pdf.strokeJoin(MITER);
-    //pdf.strokeCap(SQUARE);
     pdf.fill(bg);
-    //pdf.noStroke();
     pdf.rect(0,0, width,height);
     
   }
@@ -103,8 +109,9 @@ void draw() {
      
     float steps = map(pos.x,-width/2,width/2,0,waveSteps); 
      
-    for(int i = 0; i < wList.size(); i++) {
-    
+    for(int i = 0; i < wList.size(); i++) 
+    {
+      
       Wave w = (Wave) wList.get(i);
       
       w.setActive((int)steps);
@@ -115,7 +122,8 @@ void draw() {
   
   /* ---------------------------------------------------------------------------- */
   
-  for(int i = 0; i < wList.size(); i++) {
+  for(int i = 0; i < wList.size(); i++) 
+  {
     
     Wave w = (Wave) wList.get(i);
     w.draw();  
@@ -134,7 +142,16 @@ void draw() {
     dosave=false;
   }
   
+  /* ---------------------------------------------------------------------------- */
+  
+  if(makeMovie)
+  {
+    mm.addFrame();
+  }
+  
 }
+
+ /* ---------------------------------------------------------------------------- */
 
 // SimpleOpenNI user events
 
@@ -148,10 +165,21 @@ void onLostUser(int userId)
   println("onLostUser - userId: " + userId);
 }
 
+ /* ---------------------------------------------------------------------------- */
+
 void keyPressed() 
 {
   if (key == 's') 
   { 
     dosave = true;
+  }
+  
+  if (key == ' ') 
+  {
+    if(makeMovie) 
+    {
+      mm.finish();
+      exit();
+    }
   }
 }

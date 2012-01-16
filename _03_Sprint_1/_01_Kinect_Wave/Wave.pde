@@ -10,9 +10,10 @@ class Wave {
   color[]    col = new color[steps];
   float[]    stepWidth = new float[steps];
   
-  Wave() {
-        
-    for(int i = 0; i < steps; i++) {
+  Wave() 
+  {
+    for(int i = 0; i < steps; i++) 
+    {
       
       rotationSteps[i] = 0;
       activeTime[i] = 0;
@@ -24,8 +25,8 @@ class Wave {
     }
   }
   
-  void setActive(int step) {
-    
+  void setActive(int step) 
+  {
     if( (step < steps) && (step >= 0) ) 
     {
       active[step] = true;
@@ -39,8 +40,8 @@ class Wave {
     
   }
   
-  void update() {
-    
+  void update() 
+  {
     for(int i = 0; i < steps; i++) 
     {
       if(active[i]) 
@@ -62,7 +63,8 @@ class Wave {
     }
   }
   
-  void draw() {
+  void draw() 
+  {
     
     float s = width/steps;
     int index = 0;
