@@ -22,7 +22,7 @@ class Shadow {
     
   }
   
-  void drawShadow(float mX, float mY, float mZ) {
+  void drawShadow(float mX, float mY, float mZ, color c) {
     
     pushMatrix();
     rotateX(rotX);
@@ -41,7 +41,7 @@ class Shadow {
     scale(m);
     */
       
-    stroke(255,0,0,100);  
+    stroke(c);  
     strokeWeight(1);
     
     point(curPos.x,curPos.y);

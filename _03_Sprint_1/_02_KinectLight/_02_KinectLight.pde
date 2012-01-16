@@ -14,6 +14,8 @@ PImage       img;
 
 color        bg = color(255);
 
+color[]      userColors = { color(255,0,0), color(0,255,0), color(0,0,255), color(255,255,0), color(255,0,255), color(0,255,255) };
+
 void setup() {
  
   size(1200,800,P3D);
@@ -23,7 +25,7 @@ void setup() {
   
   /* ---------------------------------------------------------------------------- */
   
-  img = loadImage("background2.gif");
+  img = loadImage("background.gif");
         
   for(int x = 0; x < img.width; x++) {
     for(int y = 0; y < img.height; y++) {
@@ -115,11 +117,11 @@ void draw() {
     strokeWeight(15);
     point(pos.x,pos.y);
     */
-    
+        
     for(int i = 0; i < sList.size(); i++) 
     {
       Shadow s = (Shadow) sList.get(i);
-      s.drawShadow(pos.x,pos.y,pos.z);
+      s.drawShadow(pos.x,pos.y,pos.z,userColors[userId]-1);
     }
     
   }
