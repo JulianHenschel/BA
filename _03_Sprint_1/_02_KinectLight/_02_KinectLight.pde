@@ -5,7 +5,7 @@ import SimpleOpenNI.*;
 SimpleOpenNI context;
 
 float        rotX = radians(180);
-
+float        multFactor = 0.9;
 int          userCount;
 
 boolean      dosave = false;
@@ -23,7 +23,7 @@ void setup() {
   
   /* ---------------------------------------------------------------------------- */
   
-  img = loadImage("background.gif");
+  img = loadImage("background2.gif");
         
   for(int x = 0; x < img.width; x++) {
     for(int y = 0; y < img.height; y++) {
@@ -119,7 +119,7 @@ void draw() {
     for(int i = 0; i < sList.size(); i++) 
     {
       Shadow s = (Shadow) sList.get(i);
-      s.drawShadow(pos.x,pos.y);
+      s.drawShadow(pos.x,pos.y,pos.z);
     }
     
   }
@@ -135,6 +135,12 @@ void draw() {
   popMatrix();
   
   /* ---------------------------------------------------------------------------- */
+    
+  if(dosave) 
+  {
+    endRaw();
+    dosave=false;
+  }
 }
 
 // SimpleOpenNI user events

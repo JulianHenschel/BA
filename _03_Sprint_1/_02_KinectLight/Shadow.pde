@@ -4,7 +4,7 @@ class Shadow {
   color   col;
   
   Shadow(float x, float y, color c) {
-    c = col;
+    col = c;
     orgPos = new PVector(x-width/2,y-height/2);
   }
   
@@ -13,7 +13,7 @@ class Shadow {
     pushMatrix();
     rotateX(rotX);
     
-    stroke(0);
+    stroke(col);
     strokeWeight(1);
     
     point(orgPos.x,orgPos.y);  
@@ -22,7 +22,7 @@ class Shadow {
     
   }
   
-  void drawShadow(float mX, float mY) {
+  void drawShadow(float mX, float mY, float mZ) {
     
     pushMatrix();
     rotateX(rotX);
@@ -31,12 +31,17 @@ class Shadow {
     PVector curPos = new PVector(orgPos.x,orgPos.y);
     
     curPos.sub(lightPos);
-    curPos.mult(1.05);    
+    curPos.mult(multFactor);    
       
     pushMatrix();
     translate(lightPos.x,lightPos.y);
+    
+    /*
+    float m = map(mZ,0,7000,1,1.5);
+    scale(m);
+    */
       
-    stroke(200);  
+    stroke(255,0,0,100);  
     strokeWeight(1);
     
     point(curPos.x,curPos.y);
