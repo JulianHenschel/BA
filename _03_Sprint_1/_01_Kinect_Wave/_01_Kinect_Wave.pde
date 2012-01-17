@@ -17,7 +17,7 @@ float        rotY = radians(0);
 PImage       img;
 
 int          userCount;
-int          waveSteps = 100;
+int          waveSteps = 120;
 
 color        bg = color(255);
 
@@ -69,19 +69,15 @@ void setup() {
   int i      = 0;
   colors     = new int[waveSteps];
   
-  for(int x = 0; x < img.width; x+=s) {
+  for(int x = 0; x < img.width; x+=s) 
+  {
     
     int pix = x+10*img.width;
     colors[i] = img.pixels[pix];
     
-    println(i);
-    
-    i++;
-    
+    i++;  
   }
     
-  println(colors);
-  
   /* ---------------------------------------------------------------------------- */
   
 }

@@ -59,7 +59,7 @@ class Wave {
           active[i] = false;
         }
       }
-
+      
     }
   }
   
@@ -69,26 +69,23 @@ class Wave {
     float s = width/steps;
     int index = 0;
     
-    for(float i = -width/2; i < width/2; i+=(s+2)) 
+    rectMode(CENTER);
+    ellipseMode(CENTER);
+    
+    for(float i = -width/2; i < width/2; i+=s+2) 
     {
       
       pushMatrix();
       translate(i,0);
       rotateY(radians(rotationSteps[index]));
-      
-      rectMode(CENTER);
-      ellipseMode(CENTER);
-      
+            
       //fill(col[index]);
       //fill(0);
-      
-      int c = colors[index];
-      fill(c);
-      
+      fill(colors[index]);
       noStroke();
 
       //rect(i,0,s,stepHeight); 
-      rect(0,0,s,stepHeight); 
+      rect(0,0,s,stepHeight);
             
       popMatrix();
       
