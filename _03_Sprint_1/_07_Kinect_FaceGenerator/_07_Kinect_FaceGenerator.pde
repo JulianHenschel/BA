@@ -5,14 +5,17 @@ import SimpleOpenNI.*;
 SimpleOpenNI context;
 
 float        rotX = radians(180);
+float        rotY = radians(0);
+float        zoomF = 1f;
+
 int          userCount;
 boolean      dosave = false;
-color        bg = color(0);
+color        bg = color(255);
 ArrayList    facePoints;
 
 void setup() {
 
-  size(1024,768,OPENGL);
+  size(1024,768,P3D);
 
   facePoints = new ArrayList();
 
@@ -49,7 +52,8 @@ void draw() {
   if(dosave) 
   {
     PGraphicsPDF pdf = (PGraphicsPDF)beginRaw(PDF, "output/"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf"); 
-
+    
+    pdf.noStroke();
     pdf.fill(bg);
     pdf.rect(0,0, width,height);
   }
@@ -59,6 +63,8 @@ void draw() {
   pushMatrix();
   translate(width/2, height/2, 0);
   rotateX(rotX);
+  rotateY(rotY);
+  scale(zoomF);
 
   /* ---------------------------------------------------------------------------- */
 
@@ -144,20 +150,19 @@ void drawHead() {
       
       float testX = map(pos.x,-context.depthWidth()/2,context.depthWidth()/2,-width,width);
       float testY = map(pos.y,-context.depthHeight()/2,context.depthHeight()/2,-height,height);
-      float testZ = map(pos.z,0,7000,0,2000);
+      //float testZ = map(pos.z,0,7000,0,4000);
     
       pushMatrix();
-      translate(testX,testY,testZ*4);
+      translate(testX,testY,pos.z);
       
-      strokeWeight(1);
-      stroke(255);
+      // map color
+      //float col = map(pos.z,0,7000,0,255);
+      
+      stroke(0);
       noFill();
       ellipse(0,0,10,10);
-            
-      /*
-      stroke(255);
-      line(0,0,-width*2,0);
-      */
+      
+      //point(0,0,pos.z/5);  
       
       popMatrix();  
       
@@ -237,7 +242,42 @@ void onEndPose(String pose, int userId)
 }
 
 void keyPressed() 
-{
+{  
+  
+  switch(key)
+  {
+  case ' ':
+    context.setMirror(!context.mirror());
+    break;
+  }
+    
+  switch(keyCode)
+  {
+    case LEFT:
+      rotY += 0.1f;
+      break;
+    case RIGHT:
+      // zoom out
+      rotY -= 0.1f;
+      break;
+    case UP:
+      if(keyEvent.isShiftDown())
+        zoomF += 1f;
+      else
+        rotX += 0.1f;
+      break;
+    case DOWN:
+      if(keyEvent.isShiftDown())
+      {
+        zoomF -= 0.01f;
+        if(zoomF < 0.01)
+          zoomF = 0.01;
+      }
+      else
+        rotX -= 0.1f;
+      break;
+  }
+  
   if (key == 's') 
   { 
     dosave = true;
