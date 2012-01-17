@@ -32,7 +32,7 @@ void setup() {
   wList = new ArrayList();
   wList.add(new Wave());
   
-  img = loadImage("background3.jpg");
+  img = loadImage("background.jpg");
   
   /* ---------------------------------------------------------------------------- */
   

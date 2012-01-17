@@ -84,8 +84,8 @@ class Wave {
       fill(colors[index]);
       noStroke();
 
-      //rect(i,0,s,stepHeight); 
-      rect(0,0,s,stepHeight);
+      rect(0,0,s,stepHeight); 
+      //rect(0,0,s,stepHeight);
             
       popMatrix();
       
