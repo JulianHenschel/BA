@@ -13,7 +13,7 @@ int          steps = 10;
 
 boolean      dosave = false;
 
-color        bg = color(175,117,0);
+color        bg = color(255);
 
 void setup() {
   
@@ -119,15 +119,9 @@ void draw() {
         
         stroke(0);
         
-        float randX = random(-width,width);
-        float randY = random(-height,height);
-        
         point(0,0);
         noFill();
-        ellipse(0,0,30,30);
-        
-        stroke(255);
-        line(0,0,randY,randY);
+        ellipse(0,0,10,10);
         
         popMatrix();
         

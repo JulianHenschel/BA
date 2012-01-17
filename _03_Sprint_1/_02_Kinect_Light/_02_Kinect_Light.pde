@@ -26,6 +26,7 @@ void setup() {
   /* ---------------------------------------------------------------------------- */
   
   img = loadImage("background.gif");
+  //img.filter(BLUR, 6);
         
   for(int x = 0; x < img.width; x++) {
     for(int y = 0; y < img.height; y++) {

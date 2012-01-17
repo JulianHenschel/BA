@@ -14,6 +14,7 @@ class Shadow {
     rotateX(rotX);
     
     stroke(col);
+    //stroke(0);
     strokeWeight(1);
     
     point(orgPos.x,orgPos.y);  
