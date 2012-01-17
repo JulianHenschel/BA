@@ -14,10 +14,12 @@ float        zoomF = 0.5f;
 float        rotX = radians(180);
 float        rotY = radians(0);
 
-int          userCount;
-int          waveSteps = 150;
+PImage       img;
 
-color        bg = color(0);
+int          userCount;
+int          waveSteps = 100;
+
+color        bg = color(255);
 
 void setup() {
   
@@ -27,6 +29,8 @@ void setup() {
   
   wList = new ArrayList();
   wList.add(new Wave());
+  
+  img = loadImage("background.jpg");
   
   /* ---------------------------------------------------------------------------- */
   
@@ -76,6 +80,8 @@ void draw() {
   context.update();
   
   background(bg);
+  
+  image(img,0,0);
   
   /* ---------------------------------------------------------------------------- */
 
