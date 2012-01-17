@@ -6,7 +6,7 @@ SimpleOpenNI context;
 
 float        rotX = radians(180);
 float        rotY = radians(0);
-float        zoomF = 1f;
+float        zoomF = 0.5f;
 
 int          userCount;
 boolean      dosave = false;
@@ -55,9 +55,11 @@ void draw() {
   {
     PGraphicsPDF pdf = (PGraphicsPDF)beginRaw(PDF, "output/"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf"); 
     
+    /*
     pdf.noStroke();
     pdf.fill(bg);
     pdf.rect(0,0, width,height);
+    */
   }
 
   /* ---------------------------------------------------------------------------- */
@@ -103,7 +105,7 @@ void saveHeadDepthModel(float d, PVector headPos) {
   
   int[]   depthMap = context.depthMap();
   int     index;
-  int     steps = 2;
+  int     steps = 1;
   PVector realWorldPoint;
 
   userCount = context.getNumberOfUsers();
@@ -158,22 +160,25 @@ void drawPicture() {
   PVector f = getBorderPoints(5);
   
   fill(0);
-  ellipse(head.x,head.y,20,20);
+  //ellipse(head.x,head.y,20,20);
   
   float ro = 0;
   PVector randPos = new PVector(f.x,f.y);
   
+  /*
   pushMatrix();
   translate(+50,-50,f.z);
     drawHead(color(0,0,255));
   popMatrix();
-
+  */
+  
   for(int j = 0; j < 30; j++) {
     
     pushMatrix();
     translate(head.x,head.y);
     rotate(radians(ro));
-
+    
+    /*
     for(int i = 1; i <= 5; i++) {
       
       PVector pos = getBorderPoints(i);
@@ -181,13 +186,8 @@ void drawPicture() {
       stroke(0);
       noFill();
       
-      bezier(pos.x,-height,
-             width,pos.y,
-             pos.x,height,
-             -width,pos.y
-            );
-      
     }
+    */
     
     ro += 1;
     
@@ -195,7 +195,9 @@ void drawPicture() {
     
   }
   
+  /*
   drawHead(color(255,0,0));
+  */
   
   noLoop();
   
@@ -214,19 +216,23 @@ void drawHead(color c) {
       
       float testX = map(pos.x,-context.depthWidth()/2,context.depthWidth()/2,-width,width);
       float testY = map(pos.y,-context.depthHeight()/2,context.depthHeight()/2,-height,height);
-      //float testZ = map(pos.z,0,7000,0,4000);
-    
+      float testZ = map(pos.z,0,7000,0,50);
+
+      
       pushMatrix();
-      translate(testX,testY,pos.z);
+      //translate(testX,testY,pos.z);
+      translate(testX,testY,pow(testZ,3.5));
       
       // map color
-      //float col = map(pos.z,0,7000,0,255);
-      
-      stroke(c);
+      float col = map(testZ,0,50,0,255);
+      float st = map(testZ,0,50,1,10);
+
+      stroke(col);
+      strokeWeight(st);
       noFill();
-      ellipse(0,0,10,10);
+      //ellipse(0,0,4,4);
       
-      //point(0,0,pos.z/5);  
+      point(0,0,pow(testZ,3.5));  
       
       popMatrix();  
       
@@ -416,7 +422,12 @@ void keyPressed()
       else
         rotX -= 0.1f;
       break;
+      
+      
+      
   }
+  
+  println(rotY);
   
   if (key == 's') 
   { 
