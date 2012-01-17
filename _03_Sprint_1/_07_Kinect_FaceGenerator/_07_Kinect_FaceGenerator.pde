@@ -10,8 +10,10 @@ float        zoomF = 1f;
 
 int          userCount;
 boolean      dosave = false;
+boolean      drawPic = false;
 color        bg = color(255);
 ArrayList    facePoints;
+PVector      head;
 
 void setup() {
 
@@ -73,7 +75,12 @@ void draw() {
     getHeadPosition(1);
   }
   
-  drawHead();
+  if(drawPic) {;
+    drawPicture();
+    noLoop();
+  }else {
+    drawHead(color(0));
+  }
   
   /* ---------------------------------------------------------------------------- */
 
@@ -139,7 +146,64 @@ void saveHeadDepthModel(float d, PVector headPos) {
 
 /* ---------------------------------------------------------------------------- */
 
-void drawHead() {
+void drawPicture() {
+  
+  drawHead(color(0,255,0));
+    
+  //PVector t = getBorderPoints(1);
+  //PVector b = getBorderPoints(2);
+  //PVector r = getBorderPoints(3);
+  //PVector l = getBorderPoints(4);
+  
+  PVector f = getBorderPoints(5);
+  
+  fill(0);
+  ellipse(head.x,head.y,20,20);
+  
+  float ro = 0;
+  PVector randPos = new PVector(f.x,f.y);
+  
+  pushMatrix();
+  translate(+50,-50,f.z);
+    drawHead(color(0,0,255));
+  popMatrix();
+
+  for(int j = 0; j < 30; j++) {
+    
+    pushMatrix();
+    translate(head.x,head.y);
+    rotate(radians(ro));
+
+    for(int i = 1; i <= 5; i++) {
+      
+      PVector pos = getBorderPoints(i);
+      
+      stroke(0);
+      noFill();
+      
+      bezier(pos.x,-height,
+             width,pos.y,
+             pos.x,height,
+             -width,pos.y
+            );
+      
+    }
+    
+    ro += 1;
+    
+    popMatrix();
+    
+  }
+  
+  drawHead(color(255,0,0));
+  
+  noLoop();
+  
+}
+
+/* ---------------------------------------------------------------------------- */
+
+void drawHead(color c) {
 
   if(facePoints.size() > 0)
   {
@@ -158,7 +222,7 @@ void drawHead() {
       // map color
       //float col = map(pos.z,0,7000,0,255);
       
-      stroke(0);
+      stroke(c);
       noFill();
       ellipse(0,0,10,10);
       
@@ -168,6 +232,72 @@ void drawHead() {
       
     }
   }
+}
+
+/* ---------------------------------------------------------------------------- */
+
+PVector getBorderPoints(int mode) {
+  
+   PVector rtrn = new PVector(0,0);
+   
+   for(int i = 0; i < facePoints.size(); i++) 
+   {
+     PVector c = (PVector)facePoints.get(i);
+  
+     switch(mode) {
+       
+       case 1:
+         
+         // get top point
+         if(c.y > rtrn.y) {
+           rtrn = new PVector(c.x,c.y,c.z);  
+         }
+                
+         break;
+       case 2:
+       
+         // get bottom point
+         if(c.y < rtrn.y) {
+           rtrn = new PVector(c.x,c.y,c.z);  
+         }   
+         
+         break;
+       case 3:
+         
+         // get right point
+         if(c.x > rtrn.x) {
+           rtrn = new PVector(c.x,c.y,c.z);  
+         }
+         
+         break;
+         
+       case 4:
+       
+         // get left point
+         if(c.x < rtrn.x) {
+           rtrn = new PVector(c.x,c.y,c.z);  
+         }
+                
+         break;
+       
+       case 5:
+     
+         // get front point
+         if(c.z > rtrn.z) {
+           rtrn = new PVector(c.x,c.y,c.z);
+         }
+         
+         break;
+         
+       default:
+         rtrn = new PVector(0,0);
+          
+         break;
+     }
+   }
+  
+   return rtrn;
+  
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -184,7 +314,9 @@ void getHeadPosition(int userId) {
   confidence = context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_NECK, jointPosNeck);
 
   float d = dist(jointPosHead.x, jointPosHead.y, jointPosNeck.x, jointPosNeck.y);
-
+  
+  head = new PVector(jointPosHead.x,jointPosHead.y);
+  
   saveHeadDepthModel(d, jointPosHead);
 }
 
@@ -247,8 +379,16 @@ void keyPressed()
   switch(key)
   {
   case ' ':
-    context.setMirror(!context.mirror());
-    break;
+  
+    if(drawPic) 
+    {
+      drawPic = false;
+      loop();
+      noSmooth();
+    }else {
+      drawPic = true;
+      smooth();
+    }
   }
     
   switch(keyCode)
@@ -281,6 +421,7 @@ void keyPressed()
   if (key == 's') 
   { 
     dosave = true;
+    loop();
   }
 }
 
