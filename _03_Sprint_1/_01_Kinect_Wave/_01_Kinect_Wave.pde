@@ -21,6 +21,8 @@ int          waveSteps = 100;
 
 color        bg = color(255);
 
+int[]        colors;
+
 void setup() {
   
   size(1200,800,OPENGL);
@@ -30,7 +32,7 @@ void setup() {
   wList = new ArrayList();
   wList.add(new Wave());
   
-  img = loadImage("background.jpg");
+  img = loadImage("background3.jpg");
   
   /* ---------------------------------------------------------------------------- */
   
@@ -58,6 +60,29 @@ void setup() {
   
   // enable the scene, to get the floor
   context.enableScene();
+  
+  /* ---------------------------------------------------------------------------- */
+  
+  // take colors from image
+  
+  int s      = img.width/waveSteps;
+  int i      = 0;
+  colors     = new int[waveSteps];
+  
+  for(int x = 0; x < img.width; x+=s) {
+    
+    int pix = x+10*img.width;
+    colors[i] = img.pixels[pix];
+    
+    println(i);
+    
+    i++;
+    
+  }
+    
+  println(colors);
+  
+  /* ---------------------------------------------------------------------------- */
   
 }
 

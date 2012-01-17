@@ -79,9 +79,13 @@ class Wave {
       rectMode(CENTER);
       ellipseMode(CENTER);
       
-      //fill(col[index],200);
-      fill(0);
-      noStroke(); 
+      //fill(col[index]);
+      //fill(0);
+      
+      int c = colors[index];
+      fill(c);
+      
+      noStroke();
 
       //rect(i,0,s,stepHeight); 
       rect(0,0,s,stepHeight); 
