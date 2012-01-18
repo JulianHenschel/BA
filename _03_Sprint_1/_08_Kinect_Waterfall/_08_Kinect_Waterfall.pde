@@ -2,7 +2,7 @@ import processing.pdf.*;
 import processing.opengl.*;
 import generativedesign.*;
 
-int       nodeCount = 20000;
+int       nodeCount = 3000;
 
 Node[]    nodeList = new Node[nodeCount];
 Attractor attr = new Attractor();
@@ -19,7 +19,7 @@ void setup() {
     nodeList[i] = new Node(0,random(0,height)); 
     
     nodeList[i].maxVelocity = random(4,8);
-    nodeList[i].setBoundary(-10,0,width+10,height) ;
+    nodeList[i].setBoundary(0,0,width+10,height) ;
     
     nodeList[i].velocity.x = random(1,5);
     nodeList[i].velocity.y = random(0);
@@ -27,10 +27,10 @@ void setup() {
     nodeList[i].damping = 0.001;
     
   }
-  
-  attr.radius = 200;
-  attr.mode = 1;
-  attr.strength = -100;
+    
+  attr.radius = 400;
+  attr.mode = 2;
+  attr.strength = -10;
    
 }
 
@@ -48,7 +48,11 @@ void draw() {
   
   /* ---------------------------------------------------------------------------- */
   
-  background(bg);
+  //background(bg);
+  
+  fill(bg);
+  noStroke();
+  rect(0,0,width,height);
   
   /* ---------------------------------------------------------------------------- */
   
@@ -64,7 +68,7 @@ void draw() {
     if(nodeList[i].x > width) {
       nodeList[i].x = 0;
     }
-    
+        
     stroke(0);
     strokeWeight(1);
     
@@ -74,8 +78,12 @@ void draw() {
     }
     */
     
+    displayVector(nodeList[i].velocity,nodeList[i].x,nodeList[i].y,5);
+    
+    ellipseMode(CENTER);
+    
     noFill();
-    point(nodeList[i].x,nodeList[i].y);  
+    ellipse(nodeList[i].x,nodeList[i].y,10,10);  
     
   }
   
@@ -93,13 +101,34 @@ void draw() {
   
    /* ---------------------------------------------------------------------------- */
   
+  noSmooth();
+  
 }
+
+void displayVector(PVector v, float x, float y, float scayl) {
+    
+  float arrowsize = 4;
+    
+  pushMatrix();
+  translate(x,y);
+  rotate(v.heading2D());
+  
+  float len = v.mag()*scayl;
+    
+  line(0,0,len,0);
+  line(len,0,len-arrowsize,+arrowsize);
+  line(len,0,len-arrowsize,-arrowsize);
+    
+  popMatrix();
+    
+} 
 
 void keyPressed() 
 {
   if (key == 's') 
   { 
     dosave = true;
+    smooth();
   }
 }
 
