@@ -23,14 +23,15 @@ void setup() {
     
     nodeList[i].velocity.x = random(1,5);
     nodeList[i].velocity.y = random(0);
+    nodeList[i].velocity.y = random(-1,1);
     
     nodeList[i].damping = 0.001;
     
   }
     
-  attr.radius = 400;
+  attr.radius = 300;
   attr.mode = 2;
-  attr.strength = -10;
+  attr.strength = -5;
    
 }
 
