@@ -149,36 +149,42 @@ void saveHeadDepthModel(float d, PVector headPos) {
 /* ---------------------------------------------------------------------------- */
 
 void drawPicture() {
-  
-  drawHead(color(0,255,0));
-    
-  //PVector t = getBorderPoints(1);
-  //PVector b = getBorderPoints(2);
-  //PVector r = getBorderPoints(3);
-  //PVector l = getBorderPoints(4);
-  
+      
+  PVector t = getBorderPoints(1);
+  PVector b = getBorderPoints(2);
+  PVector r = getBorderPoints(3);
+  PVector l = getBorderPoints(4);
   PVector f = getBorderPoints(5);
+    
+  float topToBottom = dist(t.x,t.y,b.x,b.y);
   
-  fill(0);
-  //ellipse(head.x,head.y,20,20);
+  //fill(0);
+  //noStroke();
+  //rect(t.x,t.y,topToBottom,-topToBottom);
   
   float ro = 0;
-  PVector randPos = new PVector(f.x,f.y);
   
+  for(int i = 0; i < 20; i++) {
+  
+    pushMatrix();
+    translate(head.x,head.y);
+    rotateZ(radians(ro));  
+      
+    rect(t.x,t.y,topToBottom,-topToBottom);
+    
+    popMatrix();
+    
+    ro += 0.5;
+    
+  }
+
   /*
-  pushMatrix();
-  translate(+50,-50,f.z);
-    drawHead(color(0,0,255));
-  popMatrix();
-  */
-  
   for(int j = 0; j < 30; j++) {
     
     pushMatrix();
     translate(head.x,head.y);
     rotate(radians(ro));
     
-    /*
     for(int i = 1; i <= 5; i++) {
       
       PVector pos = getBorderPoints(i);
@@ -187,17 +193,17 @@ void drawPicture() {
       noFill();
       
     }
-    */
     
     ro += 1;
     
     popMatrix();
     
   }
-  
-  /*
-  drawHead(color(255,0,0));
   */
+  
+  
+  drawHead(color(255,0,0));
+  
   
   noLoop();
   
@@ -217,7 +223,6 @@ void drawHead(color c) {
       float testX = map(pos.x,-context.depthWidth()/2,context.depthWidth()/2,-width,width);
       float testY = map(pos.y,-context.depthHeight()/2,context.depthHeight()/2,-height,height);
       float testZ = map(pos.z,0,7000,0,50);
-
       
       pushMatrix();
       //translate(testX,testY,pos.z);
@@ -301,9 +306,13 @@ PVector getBorderPoints(int mode) {
          break;
      }
    }
+   
+   float mapX = map(rtrn.x,-context.depthWidth()/2,context.depthWidth()/2,-width,width);
+   float mapY = map(rtrn.y,-context.depthHeight()/2,context.depthHeight()/2,-height,height);
+   float mapZ = map(rtrn.z,0,7000,0,50);
   
+   //return new PVector(mapX,mapY,mapZ);
    return rtrn;
-  
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -415,7 +424,7 @@ void keyPressed()
     case DOWN:
       if(keyEvent.isShiftDown())
       {
-        zoomF -= 0.01f;
+        zoomF -= 1f;
         if(zoomF < 0.01)
           zoomF = 0.01;
       }
