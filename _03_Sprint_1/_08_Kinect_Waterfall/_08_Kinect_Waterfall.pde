@@ -2,13 +2,16 @@ import processing.pdf.*;
 import processing.opengl.*;
 import generativedesign.*;
 
-int       nodeCount = 3000;
+int       nodeCount = 2000;
 
 Node[]    nodeList = new Node[nodeCount];
 Attractor attr = new Attractor();
-
+int       attrRadius = 150;
 boolean   dosave = false;
-color     bg = color(255);
+color     bg = color(0);
+PFont     myFont;
+
+String    txt = "YOU FRIGHTEN THE ANIMALS. HOLD ON!";
 
 void setup() {
   
@@ -19,7 +22,7 @@ void setup() {
     nodeList[i] = new Node(0,random(0,height)); 
     
     nodeList[i].maxVelocity = random(4,8);
-    nodeList[i].setBoundary(0,0,width+10,height) ;
+    nodeList[i].setBoundary(0,0,width,height) ;
     
     nodeList[i].velocity.x = random(1,5);
     nodeList[i].velocity.y = random(0);
@@ -28,17 +31,19 @@ void setup() {
     nodeList[i].damping = 0.001;
     
   }
-    
-  attr.radius = 300;
-  attr.mode = 2;
-  attr.strength = -5;
+  
+  myFont = loadFont("MyriadPro-Bold-48.vlw");
+  
+  attr.radius = attrRadius;
+  attr.mode = 1;
+  attr.strength = -50;
    
 }
 
 void draw() {
   
   /* ---------------------------------------------------------------------------- */
-  
+
   if(dosave) 
   {
     PGraphicsPDF pdf = (PGraphicsPDF)beginRaw(PDF, "output/"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf"); 
@@ -60,31 +65,42 @@ void draw() {
   attr.x = mouseX;
   attr.y = mouseY;
   
+  fill(255);
+  textSize(22);
+  
+  textAlign(CENTER);
+  text(txt,attr.x-(150/2),attr.y-75,150,140);
+  
   /* ---------------------------------------------------------------------------- */
   
   for(int i = 0; i < nodeCount; i++) {
     
     nodeList[i].update();
     
-    if(nodeList[i].x > width) {
-      nodeList[i].x = 0;
-    }
-        
-    stroke(0);
-    strokeWeight(1);
-    
-    /*
-    if(i > 0) {      
-      line(nodeList[i].x,nodeList[i].y,nodeList[i-1].x,nodeList[i-1].y);
-    }
-    */
-    
-    displayVector(nodeList[i].velocity,nodeList[i].x,nodeList[i].y,5);
-    
     ellipseMode(CENTER);
-    
+        
+    strokeWeight(1);
     noFill();
-    ellipse(nodeList[i].x,nodeList[i].y,10,10);  
+    
+    float distance = dist(mouseX,mouseY,nodeList[i].x,nodeList[i].y);
+    
+    if(distance < attrRadius+(attrRadius*1)) {
+      
+      float c = constrain(distance-(attrRadius/2),0,255);
+      float c2 = map(c,0,255,255,50);
+      stroke(c2);
+      
+      displayVector(nodeList[i].velocity,nodeList[i].x,nodeList[i].y,5);
+      ellipse(nodeList[i].x,nodeList[i].y,10,10);  
+      
+    }else {
+
+      stroke(50);
+      
+      displayVector(nodeList[i].velocity,nodeList[i].x,nodeList[i].y,5);
+      ellipse(nodeList[i].x,nodeList[i].y,10,10);
+      
+    }
     
   }
   
