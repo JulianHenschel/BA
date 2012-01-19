@@ -4,6 +4,7 @@ import generativedesign.*;
 
 int       nodeCount = 2200;
 int       attrRadius = 150;
+int       attraction = -50;
 
 boolean   dosave = false;
 color     bg = color(0);
@@ -20,7 +21,7 @@ void setup() {
   
   for(int i = 0; i < nodeCount; i++) {
   
-    nodeList[i] = new Node(0,random(0,height)); 
+    nodeList[i] = new Node(random(0,width),random(0,height)); 
     
     nodeList[i].maxVelocity = random(3,8);
     nodeList[i].setBoundary(0,0,width,height) ;
@@ -36,7 +37,7 @@ void setup() {
   
   attr.radius = attrRadius;
   attr.mode = 1;
-  attr.strength = -50;
+  attr.strength = attraction;
    
 }
 
@@ -85,7 +86,8 @@ void draw() {
     
     float distance = dist(mouseX,mouseY,nodeList[i].x,nodeList[i].y);
     
-    if(distance < attrRadius*2) {
+    if(distance < attrRadius*2) 
+    {
       
       float c = constrain(distance-(attrRadius/2),0,255);
       float c2 = map(c,0,255,255,50);
@@ -129,7 +131,7 @@ void draw() {
 
 void displayVector(PVector v, float x, float y, float scayl) 
 {
-    
+  
   float arrowsize = 4;
     
   pushMatrix();
@@ -147,6 +149,13 @@ void displayVector(PVector v, float x, float y, float scayl)
   line(0,0,-len,0);
   
   popMatrix();
+    
+}
+
+void mouseClicked() {
+  
+  attraction *= -1;
+  attr.strength = attraction;
     
 }
 
