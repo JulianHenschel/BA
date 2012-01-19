@@ -2,31 +2,31 @@ import processing.pdf.*;
 import processing.opengl.*;
 import generativedesign.*;
 
-int       nodeCount = 2000;
-
-Node[]    nodeList = new Node[nodeCount];
-Attractor attr = new Attractor();
+int       nodeCount = 2200;
 int       attrRadius = 150;
+
 boolean   dosave = false;
 color     bg = color(0);
 PFont     myFont;
 
 String    txt = "YOU FRIGHTEN THE ANIMALS. HOLD ON!";
 
+Node[]    nodeList = new Node[nodeCount];
+Attractor attr = new Attractor();
+
 void setup() {
   
-  size(1024,768,OPENGL);
+  size(1200,800,OPENGL);
   
   for(int i = 0; i < nodeCount; i++) {
   
     nodeList[i] = new Node(0,random(0,height)); 
     
-    nodeList[i].maxVelocity = random(4,8);
+    nodeList[i].maxVelocity = random(3,8);
     nodeList[i].setBoundary(0,0,width,height) ;
     
-    nodeList[i].velocity.x = random(1,5);
+    nodeList[i].velocity.x = random(1,4);
     nodeList[i].velocity.y = random(0);
-    nodeList[i].velocity.y = random(-1,1);
     
     nodeList[i].damping = 0.001;
     
@@ -73,7 +73,8 @@ void draw() {
   
   /* ---------------------------------------------------------------------------- */
   
-  for(int i = 0; i < nodeCount; i++) {
+  for(int i = 0; i < nodeCount; i++) 
+  {
     
     nodeList[i].update();
     
@@ -84,11 +85,15 @@ void draw() {
     
     float distance = dist(mouseX,mouseY,nodeList[i].x,nodeList[i].y);
     
-    if(distance < attrRadius+(attrRadius*1)) {
+    if(distance < attrRadius*2) {
       
       float c = constrain(distance-(attrRadius/2),0,255);
       float c2 = map(c,0,255,255,50);
       stroke(c2);
+      
+      if(distance < attrRadius/1.5) {
+        stroke(255,0,0);  
+      }
       
       displayVector(nodeList[i].velocity,nodeList[i].x,nodeList[i].y,5);
       ellipse(nodeList[i].x,nodeList[i].y,10,10);  
@@ -122,7 +127,8 @@ void draw() {
   
 }
 
-void displayVector(PVector v, float x, float y, float scayl) {
+void displayVector(PVector v, float x, float y, float scayl) 
+{
     
   float arrowsize = 4;
     
@@ -132,20 +138,15 @@ void displayVector(PVector v, float x, float y, float scayl) {
   
   float len = v.mag()*scayl;
     
+  /* arrows
   line(0,0,len,0);
   line(len,0,len-arrowsize,+arrowsize);
   line(len,0,len-arrowsize,-arrowsize);
-    
+  */
+  
+  line(0,0,-len,0);
+  
   popMatrix();
     
-} 
-
-void keyPressed() 
-{
-  if (key == 's') 
-  { 
-    dosave = true;
-    smooth();
-  }
 }
 
