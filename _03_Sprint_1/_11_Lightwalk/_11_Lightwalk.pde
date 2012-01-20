@@ -1,82 +1,126 @@
 import processing.pdf.*;
 import processing.opengl.*;
 
-int     lightSteps = 600;
-int     lightWidth;
+int       lightSteps = 300;
+int       lightWidth;
+
+PImage    img;
+PImage[]  images;
 
 Light[] lightList;
 
 boolean dosave = false;
 
 void setup() {
-  
-  size(1200,768,P3D);
+
+  size(1200,800,OPENGL);
+
+  /* ---------------------------------------------------------------------------- */
+
+  lightWidth = width/lightSteps;
+
+  lightList = new Light[lightSteps];
+
+  for (int i = 0; i < lightList.length; i++) 
+  {
+    lightList[i] = new Light(i*lightWidth+(lightWidth/2), height/2);
+  }
   
   /* ---------------------------------------------------------------------------- */
   
-  lightWidth = width/lightSteps;
+  img = loadImage("background.jpg");
+  //image(img,0,0);
   
-  lightList = new Light[lightSteps];
+  /* ---------------------------------------------------------------------------- */
   
-  for(int i = 0; i < lightList.length; i++) {
-    lightList[i] = new Light(i*lightWidth+(lightWidth/2),height/2);
+  // copy sliced images to new image array
+  
+  images = new PImage[lightSteps];
+  
+  for(int i = 0; i < images.length; i++) 
+  {
+    
+    images[i] = createImage(lightWidth, height, RGB);
+    
+    int pixel_count = images[i].pixels.length;
+    int[] new_pixels = new int[pixel_count];
+    
+    int index = 0;    
+    
+    // read original image region
+    for(int y = 0; y < img.height; y++) 
+    {
+      for(int x = i*lightWidth; x < (i*lightWidth)+lightWidth; x++) 
+      {
+        new_pixels[index] = img.get(x,y);
+        index++;
+      } 
+    }
+    
+    // save pixels in new image
+    for(int j = 0; j < images[i].pixels.length; j++) 
+    {  
+      images[i].pixels[j] = new_pixels[j];
+    }
+
   }
   
 }
 
 void draw() {
   
-  background(0);
+  //background(0);
   
+  rectMode(NORMAL);
+  
+  fill(0,3);
+  rect(0,0,width,height);
+
   /* ---------------------------------------------------------------------------- */
-  
-  if(dosave) 
+
+  if (dosave) 
   {
 
     PGraphicsPDF pdf = (PGraphicsPDF)beginRaw(PDF, "output/"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf"); 
 
     pdf.fill(0);
-    pdf.rect(0,0, width,height);
-    
+    pdf.rect(0, 0, width, height);
   }
-  
+
   /* ---------------------------------------------------------------------------- */
-  
-  float area = (int)map(mouseX,0,width,0,lightSteps);
-        
-  for(int i = 0; i < lightList.length; i++) 
+
+  int steps = 1;
+
+  int area = (int)map(mouseX, 0, width, 0, lightSteps);
+  float depth = map(mouseY, 0, height, height/5, height);
+
+  //for (float i = area-steps; i < area+steps; i++) {
+
+    //if (i > 0 && i < lightList.length) {
+
+      //float h = map(i, area-steps, area+steps, -height, height);
+
+      lightList[area].rHeight = depth;
+      lightList[area].counter = 0;
+    //}
+  //}
+
+  /* ---------------------------------------------------------------------------- */
+
+  for (int i = 0; i < lightList.length; i++) 
   {
-    if(area == i) 
-    {
-      lightList[i].rHeight = height+1;
-    }
-      
-    lightList[i].update();  
-    lightList[i].draw();
+
+    lightList[i].update();
+    lightList[i].draw(i);
   }
   
   /* ---------------------------------------------------------------------------- */
-  
-  // draw center
-  
-  rectMode(CENTER);
-  fill(30);
-  stroke(0,50);
-  rect(width/2,height/2,width,20);
-  
-  noStroke();
-  fill(0,100);
-  rect(width/2,height/2-10,width,5);
-  rect(width/2,height/2+11,width,5);
-  
-  /* ---------------------------------------------------------------------------- */
-  
-  if(dosave) 
+
+  if (dosave) 
   {
     endRaw();
     dosave=false;
   }
-  
 }
 
 void keyPressed() 
@@ -86,3 +130,4 @@ void keyPressed()
     dosave = true;
   }
 }
+

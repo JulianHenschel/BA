@@ -1,6 +1,6 @@
 PImage img;
 
-int    lightRadius = 300;
+int    lightRadius = 200;
 
 void setup() {
  
