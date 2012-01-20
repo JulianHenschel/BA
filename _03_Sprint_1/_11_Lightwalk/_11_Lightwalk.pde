@@ -20,6 +20,12 @@ void setup() {
   size(1200,800,P3D);
   background(0);
   
+  /* ---------------------------------------------------------------------------- */
+  
+  kinectSetup();
+  
+  /* ---------------------------------------------------------------------------- */
+  
   if(makeMovie)
   {
     mm = new MovieMaker(this, width, height, "output/mov/"+year()+month()+day()+"-"+hour()+minute()+second()+".mov", 30, MovieMaker.ANIMATION, MovieMaker.HIGH);
@@ -84,6 +90,10 @@ void draw() {
   
   fill(0,4);
   rect(0,0,width,height);
+  
+  /* ---------------------------------------------------------------------------- */
+  
+  kinectDraw();
 
   /* ---------------------------------------------------------------------------- */
 
@@ -97,21 +107,28 @@ void draw() {
   }
 
   /* ---------------------------------------------------------------------------- */
-
-  int area = (int)map(mouseX, 0, width, 0, lightSteps);
-  float depth = map(mouseY, 0, height, height/5, height);
-
-  for (float i = area-beforeBehind; i < area+beforeBehind; i++) {
-
-    if (i > 0 && i < lightList.length) {
-
-      float h = map(i, area-beforeBehind, area+beforeBehind, -height, height);
-
-      lightList[(int)i].rHeight = depth;
-      lightList[(int)i].counter = 0;
+  
+  for (int i = 0; i < users.size(); i++)
+  {
+  
+    CoM c = (CoM)users.get(i);
+  
+    int area = (int)map(c.pos.x, 0, width, 0, lightSteps);
+    float depth = map(c.pos.z, 0, 3000, height/5, height);
+  
+    for (float j = area-beforeBehind; j < area+beforeBehind; j++) {
+  
+      if (j > 0 && j < lightList.length) {
+  
+        float h = map(j, area-beforeBehind, area+beforeBehind, -height, height);
+  
+        lightList[(int)j].rHeight = depth;
+        lightList[(int)j].counter = 0;
+      }
     }
+    
   }
-
+  
   /* ---------------------------------------------------------------------------- */
 
   for (int i = 0; i < lightList.length; i++) 
@@ -119,7 +136,7 @@ void draw() {
     lightList[i].update();
     lightList[i].draw(i);
   }
-  
+
   /* ---------------------------------------------------------------------------- */
 
   if(dosave) 
@@ -134,6 +151,8 @@ void draw() {
   {
     mm.addFrame();
   }
+  
+  /* ---------------------------------------------------------------------------- */
   
 }
 
