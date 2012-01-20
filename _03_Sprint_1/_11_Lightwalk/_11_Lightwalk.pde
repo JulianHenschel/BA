@@ -10,6 +10,7 @@ PImage     img;
 PImage[]   images;
 
 boolean    dosave = false;
+boolean    makeMovie = false;
 
 Light[]    lightList;
 MovieMaker mm;
@@ -19,8 +20,11 @@ void setup() {
   size(1200,800,P3D);
   background(0);
   
-  mm = new MovieMaker(this, width, height, "drawing.mov", 30, MovieMaker.ANIMATION, MovieMaker.HIGH);
-
+  if(makeMovie)
+  {
+    mm = new MovieMaker(this, width, height, "output/mov/"+year()+month()+day()+"-"+hour()+minute()+second()+".mov", 30, MovieMaker.ANIMATION, MovieMaker.HIGH);
+  }
+  
   /* ---------------------------------------------------------------------------- */
 
   lightWidth = width/lightSteps;
@@ -35,7 +39,6 @@ void setup() {
   /* ---------------------------------------------------------------------------- */
   
   img = loadImage("background.jpg");
-  //image(img,0,0);
   
   /* ---------------------------------------------------------------------------- */
   
@@ -119,7 +122,7 @@ void draw() {
   
   /* ---------------------------------------------------------------------------- */
 
-  if (dosave) 
+  if(dosave) 
   {
     endRaw();
     dosave=false;
@@ -127,7 +130,10 @@ void draw() {
   
   /* ---------------------------------------------------------------------------- */
   
-  mm.addFrame();
+  if(makeMovie) 
+  {
+    mm.addFrame();
+  }
   
 }
 
@@ -138,8 +144,11 @@ void keyPressed()
     dosave = true;
   }
   
-  if (key == ' ') {
-    mm.finish();
-    exit();
+  if(makeMovie) 
+  {
+    if (key == ' ') {
+      mm.finish();
+      exit();
+    }
   }
 }
