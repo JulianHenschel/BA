@@ -1,7 +1,7 @@
 import processing.pdf.*;
 import processing.opengl.*;
 
-int       lightSteps = 300;
+int       lightSteps = 400;
 int       lightWidth;
 
 PImage    img;
@@ -14,6 +14,7 @@ boolean dosave = false;
 void setup() {
 
   size(1200,800,OPENGL);
+  background(0);
 
   /* ---------------------------------------------------------------------------- */
 
@@ -71,9 +72,9 @@ void draw() {
   
   //background(0);
   
-  rectMode(NORMAL);
+  rectMode(CORNER);
   
-  fill(0,3);
+  fill(0,4);
   rect(0,0,width,height);
 
   /* ---------------------------------------------------------------------------- */
@@ -89,21 +90,21 @@ void draw() {
 
   /* ---------------------------------------------------------------------------- */
 
-  int steps = 1;
+  int steps = 10;
 
   int area = (int)map(mouseX, 0, width, 0, lightSteps);
   float depth = map(mouseY, 0, height, height/5, height);
 
-  //for (float i = area-steps; i < area+steps; i++) {
+  for (float i = area-steps; i < area+steps; i++) {
 
-    //if (i > 0 && i < lightList.length) {
+    if (i > 0 && i < lightList.length) {
 
-      //float h = map(i, area-steps, area+steps, -height, height);
+      float h = map(i, area-steps, area+steps, -height, height);
 
-      lightList[area].rHeight = depth;
-      lightList[area].counter = 0;
-    //}
-  //}
+      lightList[(int)i].rHeight = depth;
+      lightList[(int)i].counter = 0;
+    }
+  }
 
   /* ---------------------------------------------------------------------------- */
 
