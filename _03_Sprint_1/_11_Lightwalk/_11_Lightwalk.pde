@@ -1,20 +1,25 @@
 import processing.pdf.*;
 import processing.opengl.*;
+import processing.video.*;
 
-int       lightSteps = 400;
-int       lightWidth;
+int        lightSteps = 600;
+int        beforeBehind = 10;
+int        lightWidth;
 
-PImage    img;
-PImage[]  images;
+PImage     img;
+PImage[]   images;
 
-Light[] lightList;
+boolean    dosave = false;
 
-boolean dosave = false;
+Light[]    lightList;
+MovieMaker mm;
 
 void setup() {
 
-  size(1200,800,OPENGL);
+  size(1200,800,P3D);
   background(0);
+  
+  mm = new MovieMaker(this, width, height, "drawing.mov", 30, MovieMaker.ANIMATION, MovieMaker.HIGH);
 
   /* ---------------------------------------------------------------------------- */
 
@@ -90,16 +95,14 @@ void draw() {
 
   /* ---------------------------------------------------------------------------- */
 
-  int steps = 10;
-
   int area = (int)map(mouseX, 0, width, 0, lightSteps);
   float depth = map(mouseY, 0, height, height/5, height);
 
-  for (float i = area-steps; i < area+steps; i++) {
+  for (float i = area-beforeBehind; i < area+beforeBehind; i++) {
 
     if (i > 0 && i < lightList.length) {
 
-      float h = map(i, area-steps, area+steps, -height, height);
+      float h = map(i, area-beforeBehind, area+beforeBehind, -height, height);
 
       lightList[(int)i].rHeight = depth;
       lightList[(int)i].counter = 0;
@@ -110,7 +113,6 @@ void draw() {
 
   for (int i = 0; i < lightList.length; i++) 
   {
-
     lightList[i].update();
     lightList[i].draw(i);
   }
@@ -122,6 +124,11 @@ void draw() {
     endRaw();
     dosave=false;
   }
+  
+  /* ---------------------------------------------------------------------------- */
+  
+  mm.addFrame();
+  
 }
 
 void keyPressed() 
@@ -130,5 +137,9 @@ void keyPressed()
   { 
     dosave = true;
   }
+  
+  if (key == ' ') {
+    mm.finish();
+    exit();
+  }
 }
-

@@ -47,10 +47,10 @@ class Light {
     //fill(255);
     noStroke();
     
-    if(cHeight > 0) { 
+    if(cHeight > 0) 
+    {
       
       beginShape();
-      
       texture(images[index]);
       
       float new_x = pos.x - lightWidth/2;
@@ -60,12 +60,17 @@ class Light {
       vertex(new_x+lightWidth,cHeight,new_x+lightWidth,cHeight);
       vertex(new_x,cHeight,0,cHeight);
       
-      endShape();
+      /*backup
+      vertex(new_x,0,0,0);
+      vertex(new_x+lightWidth,0,new_x+lightWidth,0);
+      vertex(new_x+lightWidth,cHeight,new_x+lightWidth,cHeight);
+      vertex(new_x,cHeight,0,cHeight);
+      */
       
+      endShape();
+            
     }
-    
     counter++;
-    
   }
   
 }
