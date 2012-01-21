@@ -19,7 +19,7 @@ PImage       img;
 int          userCount;
 int          waveSteps = 120;
 
-color        bg = color(255);
+color        bg = color(0);
 
 int[]        colors;
 
@@ -102,7 +102,7 @@ void draw() {
   
   background(bg);
   
-  image(img,0,0);
+  //image(img,0,0);
   
   /* ---------------------------------------------------------------------------- */
 
@@ -134,7 +134,7 @@ void draw() {
   {
     context.getCoM(userId,pos);
      
-    float steps = map(pos.x,-width/2,width/2,0,waveSteps); 
+    float steps = map(pos.x,-width/2,width/2,waveSteps,0); 
      
     for(int i = 0; i < wList.size(); i++) 
     {

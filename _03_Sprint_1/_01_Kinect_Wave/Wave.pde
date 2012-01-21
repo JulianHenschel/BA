@@ -1,7 +1,7 @@
 class Wave {
   
   int        steps = waveSteps;
-  int        stepHeight = height;
+  int        stepHeight = 400;
   
   int[]      rotationSteps = new int[steps];
   int[]      activeSpeed = new int[steps];
@@ -77,14 +77,14 @@ class Wave {
       
       pushMatrix();
       translate(i,0);
-      rotateY(radians(rotationSteps[index]));
+      rotateX(radians(rotationSteps[index]));
             
-      //fill(col[index]);
+      fill(col[index]);
       //fill(0);
-      fill(colors[index]);
+      //fill(colors[index]);
       noStroke();
 
-      rect(0,0,s,stepHeight); 
+      rect(0,0,s+stepWidth[index],stepHeight); 
       //rect(0,0,s,stepHeight);
             
       popMatrix();
