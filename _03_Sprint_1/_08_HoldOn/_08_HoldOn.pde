@@ -152,10 +152,17 @@ void displayVector(PVector v, float x, float y, float scayl)
     
 }
 
-void mouseClicked() {
-  
+void keyPressed() 
+{
+  if (key == 's') 
+  { 
+    dosave = true;
+  }
+}
+
+void mouseClicked() 
+{  
   attraction *= -1;
-  attr.strength = attraction;
-    
+  attr.strength = attraction;   
 }
 
