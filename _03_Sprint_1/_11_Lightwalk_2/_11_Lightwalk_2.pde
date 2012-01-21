@@ -13,11 +13,19 @@ void setup() {
     
   lightList = new ArrayList();
   
+  /* ---------------------------------------------------------------------------- */
+  
+  kinectSetup();
+  
 }
 
 void draw() {
   
   background(0);
+  
+  /* ---------------------------------------------------------------------------- */
+  
+  kinectDraw();
   
   /* ---------------------------------------------------------------------------- */
   
@@ -34,7 +42,13 @@ void draw() {
   /* ---------------------------------------------------------------------------- */
     
   // add new light
-  lightList.add(new Light(mouseX,mouseY));
+  for (int i = 0; i < users.size(); i++)
+  {
+    CoM c = (CoM)users.get(i);
+    
+    int colorIndex = c.id % userColors.length;    
+    lightList.add(new Light(c.pos.x,c.pos.y,userColors[colorIndex]));
+  }
   
   /* ---------------------------------------------------------------------------- */
   
@@ -55,7 +69,7 @@ void draw() {
 
     Light l = (Light)lightList.get(i);
     
-    if(l.counter > 200) { 
+    if(l.counter > 250) { 
       lightList.remove(i);  
     }
   }
@@ -77,6 +91,8 @@ void draw() {
     endRaw();
     dosave=false;
   }
+  
+  /* ---------------------------------------------------------------------------- */
   
 }
 

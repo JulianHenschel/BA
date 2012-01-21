@@ -6,14 +6,15 @@ class Light {
   int       counter = 0;
   int       angle = (int)random(0,360);
   int       radius = 0;
-  float     factor = random(-1,1);
   int       modulo = frameCount%2;
+  float     factor = random(-1,1);
     
-  color     c = color(random(0,255),0,0);
+  color     c;
   
-  Light(float x, float y) 
+  Light(float x, float y, color col) 
   {
      pos = new PVector(x,y);
+     c = col;
   }
     
   void update() 
