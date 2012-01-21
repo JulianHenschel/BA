@@ -2,9 +2,10 @@ import processing.pdf.*;
 import processing.opengl.*;
 import processing.video.*;
 
-int        lightSteps = 600;
-int        beforeBehind = 10;
+int        lightSteps = 500;
+int        beforeBehind = 30;
 int        lightWidth;
+int[]      colors;
 
 PImage     img;
 PImage[]   images;
@@ -17,7 +18,7 @@ MovieMaker mm;
 
 void setup() {
 
-  size(1200,800,P3D);
+  size(1200,800,OPENGL);
   background(0);
   
   /* ---------------------------------------------------------------------------- */
@@ -32,6 +33,10 @@ void setup() {
   }
   
   /* ---------------------------------------------------------------------------- */
+  
+  img = loadImage("background3.jpg");
+  
+  /* ---------------------------------------------------------------------------- */
 
   lightWidth = width/lightSteps;
 
@@ -41,10 +46,6 @@ void setup() {
   {
     lightList[i] = new Light(i*lightWidth+(lightWidth/2), height/2);
   }
-  
-  /* ---------------------------------------------------------------------------- */
-  
-  img = loadImage("background.jpg");
   
   /* ---------------------------------------------------------------------------- */
   
@@ -80,20 +81,21 @@ void setup() {
 
   }
   
+  img.filter(THRESHOLD);
+  img.filter(BLUR,6);
+  
 }
 
 void draw() {
   
-  //background(0);
-  
+  /*  
   rectMode(CORNER);
   
   fill(0,4);
   rect(0,0,width,height);
+  */
   
-  /* ---------------------------------------------------------------------------- */
-  
-  kinectDraw();
+  image(img,0,0);
 
   /* ---------------------------------------------------------------------------- */
 
@@ -114,7 +116,7 @@ void draw() {
     CoM c = (CoM)users.get(i);
   
     int area = (int)map(c.pos.x, 0, width, 0, lightSteps);
-    float depth = map(c.pos.z, 0, 3000, height/5, height);
+    float depth = map(c.pos.z, kinect_to_front, kinect_to_back, height, 30);
   
     for (float j = area-beforeBehind; j < area+beforeBehind; j++) {
   
@@ -136,6 +138,10 @@ void draw() {
     lightList[i].update();
     lightList[i].draw(i);
   }
+  
+  /* ---------------------------------------------------------------------------- */
+  
+  kinectDraw();
 
   /* ---------------------------------------------------------------------------- */
 
