@@ -1,9 +1,19 @@
 import SimpleOpenNI.*;
+import controlP5.*;
+
+SimpleOpenNI  context;
+ControlP5     controlP5;
 
 ArrayList     users;
 int           userCount = 0;
 color[]       userColors = { color(0,255,255), color(255,0,0), color(0,255,0), color(0,0,255), color(255,255,0), color(255,0,255) };
-SimpleOpenNI  context;
+
+boolean       showControls = false;
+
+float         kinect_to_front = 0;
+float         kinect_to_back = 7000;
+float         kinect_to_left = 0;
+float         kinect_to_right = 0;
 
 void kinectSetup() 
 {
@@ -28,7 +38,21 @@ void kinectSetup()
   
   /* ---------------------------------------------------------------------------- */
   
+  controlP5 = new ControlP5(this);
+  
+  kinect_to_left = -width/2;
+  kinect_to_right = width/2;
+  
+  controlP5.addSlider("kinect_to_front",0,7000,kinect_to_front,40,60,250,20).setLabel("Kinect -> front");
+  controlP5.addSlider("kinect_to_back",0,7000,kinect_to_back,40,90,250,20).setLabel("Kinect -> back");
+  controlP5.addSlider("kinect_to_left",-width,width,kinect_to_left,40,120,250,20).setLabel("Kinect -> left");
+  controlP5.addSlider("kinect_to_right",-width,width,kinect_to_right,40,150,250,20).setLabel("Kinect -> right");
+  
+  /* ---------------------------------------------------------------------------- */
+  
   users = new ArrayList();
+  
+  /* ---------------------------------------------------------------------------- */
   
 }
 
@@ -40,7 +64,6 @@ void kinectDraw()
   /* ---------------------------------------------------------------------------- */
   
   userCount = context.getNumberOfUsers();
-  println(userCount);
   
   /* ---------------------------------------------------------------------------- */
   
@@ -53,9 +76,9 @@ void kinectDraw()
     
     context.getCoM(c.id,pos);
     
-    float theX = map(pos.x,-width/2,width/2,width,0);
+    float theX = map(pos.x,kinect_to_left,kinect_to_right,width,0);
     float theY = map(pos.y,-height/2,height/2,height,0);
-    float theZ = pos.z;
+    float theZ = map(pos.z,0,7000,kinect_to_front,kinect_to_back);
     
     c.pos = new PVector(theX,theY,theZ);
     
@@ -63,7 +86,41 @@ void kinectDraw()
   
   /* ---------------------------------------------------------------------------- */
   
+  kinectControls();
+    
 }
+
+/* ---------------------------------------------------------------------------- */
+
+void kinectControls() {
+  
+  if(dist(20,20,mouseX,mouseY) < 500) 
+  {
+    showControls = true;
+  }else 
+  {
+    showControls = false;
+  }
+   
+  if(showControls) 
+  {
+    
+    fill(0);
+    stroke(255);
+    
+    rectMode(CORNER);
+    rect(20,40,360,150);
+    
+    controlP5.show();
+    
+  }else 
+  {
+    controlP5.hide();
+  }
+  
+}
+
+/* ---------------------------------------------------------------------------- */
 
 void onNewUser(int userId) 
 {
@@ -85,14 +142,14 @@ void onLostUser(int userId)
   }
 }
 
-class CoM 
-{
+/* ---------------------------------------------------------------------------- */
+
+class CoM {
   
   int     id;
   PVector pos;
   
-  CoM(int userId) 
-  {
+  CoM(int userId) {
     
     id = userId;
     pos = new PVector(0,0);

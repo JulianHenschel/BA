@@ -1,6 +1,10 @@
 import processing.pdf.*;
 import processing.opengl.*;
 import processing.video.*;
+import fullscreen.*;
+
+int        w = 1440;
+int        h = 900;
 
 int        lightSteps = 500;
 int        beforeBehind = 30;
@@ -15,10 +19,11 @@ boolean    makeMovie = false;
 
 Light[]    lightList;
 MovieMaker mm;
+FullScreen fs;
 
 void setup() {
 
-  size(1200,800,OPENGL);
+  size(w,h,OPENGL);
   background(0);
   
   /* ---------------------------------------------------------------------------- */
@@ -34,7 +39,14 @@ void setup() {
   
   /* ---------------------------------------------------------------------------- */
   
-  img = loadImage("background3.jpg");
+  // init fullscreen object
+  
+  fs = new FullScreen(this); 
+  fs.enter();
+  
+  /* ---------------------------------------------------------------------------- */
+  
+  img = loadImage("background3_1440_900.jpg");
   
   /* ---------------------------------------------------------------------------- */
 

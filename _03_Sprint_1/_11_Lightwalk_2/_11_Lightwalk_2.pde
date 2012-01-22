@@ -1,21 +1,34 @@
 import processing.opengl.*;
 import processing.pdf.*;
+import fullscreen.*;
 
-int       lightWidth;
-boolean   dosave = false;
-ArrayList lightList;
+FullScreen fs;
+
+int        w = 1440;
+int        h = 900;
+
+int        lightWidth;
+boolean    dosave = false;
+ArrayList  lightList;
 
 void setup() {
   
-  size(1200,768,OPENGL);
+  size(w,h,OPENGL);
   
-  frameRate(60);
+  frameRate(40);
     
   lightList = new ArrayList();
   
   /* ---------------------------------------------------------------------------- */
   
   kinectSetup();
+  
+  /* ---------------------------------------------------------------------------- */
+  
+  // init fullscreen object
+  
+  fs = new FullScreen(this); 
+  fs.enter();
   
 }
 
@@ -46,7 +59,7 @@ void draw() {
   {
     CoM c = (CoM)users.get(i);
     
-    int colorIndex = c.id % userColors.length;    
+    int colorIndex = c.id % userColors.length;
     lightList.add(new Light(c.pos.x,c.pos.y,userColors[colorIndex]));
   }
   
@@ -69,7 +82,7 @@ void draw() {
 
     Light l = (Light)lightList.get(i);
     
-    if(l.counter > 250) { 
+    if(l.counter > 300) { 
       lightList.remove(i);  
     }
   }

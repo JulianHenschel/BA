@@ -2,9 +2,11 @@ import processing.opengl.*;
 import processing.pdf.*;
 import processing.video.*;
 import SimpleOpenNI.*;
+import fullscreen.*;
 
 SimpleOpenNI context;
 MovieMaker   mm;
+FullScreen   fs;
 
 ArrayList    wList;
 boolean      dosave = false;
@@ -16,6 +18,9 @@ float        rotY = radians(0);
 
 PImage       img;
 
+int          w = 1440;
+int          h = 900;
+
 int          userCount;
 int          waveSteps = 120;
 
@@ -25,7 +30,7 @@ int[]        colors;
 
 void setup() {
   
-  size(1200,800,OPENGL);
+  size(w,h,OPENGL);
   
   /* ---------------------------------------------------------------------------- */
   
@@ -40,6 +45,13 @@ void setup() {
   {
     mm = new MovieMaker(this, width, height, "drawing.mov", 30, MovieMaker.ANIMATION, MovieMaker.HIGH);
   }
+  
+  /* ---------------------------------------------------------------------------- */
+  
+  // init fullscreen object
+  
+  fs = new FullScreen(this); 
+  fs.enter();
   
   /* ---------------------------------------------------------------------------- */
   
