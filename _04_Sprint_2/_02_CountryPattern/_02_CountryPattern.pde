@@ -9,16 +9,18 @@ Kuler            k;
 KulerTheme[]     kt;
 ToxiclibsSupport gfx;
 Line2D[]         ls;
+Palette[]        pl;
 
-int       count = 20;
-boolean   dosave = false;
-ArrayList al;
-String    country = "fiji";
-PFont     myFont;
+String[][] csv;
+int        count = 20;
+boolean    dosave = false;
+ArrayList  al;
+PFont      myFont;
+int        curCountry = 0;
 
 void setup() {
   
-  size(600,800);
+  size(600,849);
   smooth();
   
   /* ---------------------------------------------------------------------------- */
@@ -26,7 +28,7 @@ void setup() {
   k = new Kuler(this);
   k.setKey("D8499719CCFCD92F468F2BADDAEA4BDC");
   k.setNumResults(1);
-  kt = k.search(country, "title");
+  
   
   /* ---------------------------------------------------------------------------- */
 
@@ -39,9 +41,43 @@ void setup() {
   
   /* ---------------------------------------------------------------------------- */
   
+  loadCSV();
+  
+  pl = new Palette[csv.length];
+  
+  for(int i = 0; i < csv.length; i++) 
+  {
+    kt = k.search(csv[i][0], "title");
+    
+    int count = k.getNumResults();
+    if(count > 0) 
+    {
+      pl[i] = kt[0];
+    }
+  }
+  
+  
+  
+  /* ---------------------------------------------------------------------------- */
+  
   al = new ArrayList();
   
   /* ---------------------------------------------------------------------------- */
+  
+}
+ 
+void draw() {
+  
+  /* ---------------------------------------------------------------------------- */
+  
+  // define database
+  
+  //float w = map(Integer.parseInt(csv[curCountry][1]),0,674843,0,width);
+  //float h = map(Integer.parseInt(csv[curCountry][1]),0,674843,0,height);
+  
+  //float c = map(Integer.parseInt(csv[curCountry][3]),0,229,0,100);
+  
+  count = 50;
   
   ls = new Line2D[count];
   
@@ -51,12 +87,8 @@ void setup() {
   
   /* ---------------------------------------------------------------------------- */
   
-}
- 
-void draw() {
-  
-  int darkestColor = kt[0].getDarkest();
-  int lightestColor = kt[0].getLightest();
+  int darkestColor = pl[curCountry].getDarkest();
+  int lightestColor = pl[curCountry].getLightest();
   
   /* ---------------------------------------------------------------------------- */
   
@@ -66,7 +98,7 @@ void draw() {
   
   if(dosave) {
     
-    beginRecord(PDF, "output/"+country+"-"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf");
+    beginRecord(PDF, "output/"+csv[curCountry][0]+"-"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf");
     noStroke();
     fill(lightestColor);
     rect(0,0,width,height);
@@ -107,7 +139,7 @@ void draw() {
     PVector p2 = (PVector)al.get((int)random(0,al.size()));
     PVector p3 = (PVector)al.get((int)random(0,al.size()));
     
-    int col = kt[0].getColor((int)random(0,4));
+    int col = pl[curCountry].getColor((int)random(0,4));
         
     fill(col,200);
     noStroke();
@@ -140,7 +172,7 @@ void draw() {
   textSize(50);
   fill(lightestColor);
   textAlign(CENTER);
-  text(country.toUpperCase(), width/2, height/2);
+  text(csv[curCountry][0].toUpperCase(), width/2, height/2);
   
   /* ---------------------------------------------------------------------------- */
   
@@ -166,6 +198,13 @@ void keyPressed() {
     }
     
     al.clear();
+    
+    curCountry++;
+    
+    if(curCountry > csv.length-1) {
+      curCountry = 0;
+    }
+    
   }
   
   /* ---------------------------------------------------------------------------- */
