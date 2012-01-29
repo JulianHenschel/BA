@@ -30,29 +30,37 @@ void setup() {
   
   darkestColor = kt[0].getDarkest();
   lightestColor = kt[0].getLightest();
+  
+  /*
+  int steps = 10;
+  
+  for(int x = steps; x <= width-steps; x+=steps) {
+   for(int y = steps; y <= height-steps; y+=steps) {
+     cl.add(new Connect(x,y,id)); 
+     id++;
+    }
+  }
+  */
     
 }
 
 void draw() {
   
-  if(dosave) {
-    
-    beginRecord(PDF, "output/"+country+"-"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf");
-    noStroke();
-    fill(darkestColor);
-    rect(0,0,width,height);
-    
-  }
-  
   background(darkestColor);
   
-  for(int i = 0; i < cl.size(); i++) {
-    
+  if(dosave) 
+  {
+    beginRecord(PDF, "output/"+country+"-"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf");
+  }
+  
+  for(int i = 0; i < cl.size(); i++) 
+  {  
     Connect c = (Connect)cl.get(i);
     c.draw();
   }
   
-  if(dosave) {
+  if(dosave) 
+  {
     endRecord();
     dosave=false;
   }
@@ -61,7 +69,8 @@ void draw() {
   
 }
 
-void mouseClicked() {
+void mouseClicked() 
+{
  
   cl.add(new Connect(mouseX,mouseY,id)); 
   
@@ -70,17 +79,18 @@ void mouseClicked() {
   loop();
 }
 
-void keyPressed() {
-
-  if (key == 'r') {
+void keyPressed() 
+{
+  if (key == 'r') 
+  {
     cl.clear();
     background(0);
     loop();
   }
   
-  if (key == 's') { 
+  if (key == 's') 
+  { 
     dosave = true;
     loop();
   } 
-  
 }
