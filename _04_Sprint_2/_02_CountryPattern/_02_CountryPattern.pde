@@ -140,13 +140,16 @@ void draw() {
     PVector p3 = (PVector)al.get((int)random(0,al.size()));
     
     int col = pl[curCountry].getColor((int)random(0,4));
-        
+
     fill(col,200);
     noStroke();
     stroke(darkestColor,100);
     strokeWeight(.5);
     triangle(p.x,p.y,p2.x,p2.y,p3.x,p3.y);
-        
+    
+    //textSize(i*10);
+    //text(csv[curCountry][0].toUpperCase(), width/2, i*10);
+       
     for (int j = al.size()-1; j >= 0; j--) {
     
       PVector a = (PVector)al.get(j);

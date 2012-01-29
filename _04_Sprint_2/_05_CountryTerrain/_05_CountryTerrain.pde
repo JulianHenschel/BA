@@ -6,11 +6,11 @@ import processing.pdf.*;
 Kuler            k;
 KulerTheme[]     kt;
 
-int              steps = 400;
+int              steps = 600;
 int              darkestColor;
 int              lightestColor;
 
-String           country = "germany";
+String           country = "china";
 
 boolean          dosave = false;
 

@@ -3,13 +3,17 @@ import colorLib.*;
 import colorLib.webServices.*;
 import processing.pdf.*;
 
-Kuler            k;
-KulerTheme[]     kt;
+Kuler         k;
+KulerTheme[]  kt;
+Matrix        m;
+Matrix        m2;
 
-Matrix m;
-Matrix m2;
+PFont         myFont;
+boolean       dosave = false;
+String        country = "Germany";
 
-boolean    dosave = false;
+int           darkestColor;
+int           lightestColor;
 
 void setup() {
   
@@ -20,11 +24,14 @@ void setup() {
   k.setKey("D8499719CCFCD92F468F2BADDAEA4BDC");
   k.setNumResults(1);
   
-  kt = k.search("fiji", "title");
+  kt = k.search(country, "title");
   m = new Matrix(0,width,kt[0]);
   
   //kt = k.search("fiji", "title");
   //m2 = new Matrix(width/5,width-width/5,kt[0]);
+  
+  myFont = loadFont("MyriadPro-Regular-48.vlw");
+  textFont(myFont);
   
 }
 
@@ -39,10 +46,14 @@ void draw() {
     
   }
   
-  background(255);
+  background(lightestColor);
+  
+  textSize(118);
+  fill(darkestColor);
+  textAlign(CENTER);
+  text(country.toUpperCase(), width/2, height/2);
   
   m.draw();
-  //m2.draw();
   
   if(dosave) {
     endRecord();
