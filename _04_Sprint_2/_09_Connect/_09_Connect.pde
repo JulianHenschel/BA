@@ -7,13 +7,15 @@ ArrayList     cl;
 int           id = 0;
 boolean       dosave = false;
 
+PFont         myFont;
+
 Kuler         k;
 KulerTheme[]  kt;
 
 int           darkestColor;
 int           lightestColor;
 
-String        country = "Germany";
+String        country = "Sweden";
 
 void setup() {
   
@@ -31,6 +33,9 @@ void setup() {
   darkestColor = kt[0].getDarkest();
   lightestColor = kt[0].getLightest();
   
+  myFont = loadFont("MyriadPro-Regular-48.vlw");
+  textFont(myFont);
+  
   /*
   int steps = 10;
   
@@ -41,6 +46,12 @@ void setup() {
     }
   }
   */
+  
+  for(int i = 0; i < 10; i++) 
+  {
+    cl.add(new Connect(random(-width/2,width+width/2),random(-height/2,height+height/2),id,(int)random(200,500))); 
+    id++;
+  }
     
 }
 
@@ -59,6 +70,8 @@ void draw() {
     c.draw();
   }
   
+  drawTextInformations();
+  
   if(dosave) 
   {
     endRecord();
@@ -69,14 +82,25 @@ void draw() {
   
 }
 
+void drawTextInformations() {
+  
+  textSize(50);
+  fill(lightestColor);
+  textAlign(LEFT);
+  text(country.toUpperCase(), 50, height-50);
+  
+}
+
 void mouseClicked() 
 {
- 
+  
+  /*
   cl.add(new Connect(mouseX,mouseY,id)); 
   
   id++;
   
   loop();
+  */
 }
 
 void keyPressed() 
