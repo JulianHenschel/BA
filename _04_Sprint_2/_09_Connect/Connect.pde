@@ -16,7 +16,7 @@ class Connect {
   }
   
   void draw() {
-    
+        
     // define connections to draw
     for(int i = 0; i < cl.size(); i++) 
     {
@@ -52,16 +52,19 @@ class Connect {
                     
         }
       }
+
     }
     
     drawCenter();
+    
+    println("rendered id "+id+": "+steps+" lines");
     
   }
   
   void drawCenter() {
     
     noFill();
-    stroke(lightestColor);
+    stroke(darkestColor);
     
     ellipse(pos.x,pos.y,10,10); 
     

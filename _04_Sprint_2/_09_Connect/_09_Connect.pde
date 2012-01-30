@@ -15,7 +15,7 @@ KulerTheme[]  kt;
 int           darkestColor;
 int           lightestColor;
 
-String        country = "Sweden";
+String        country = "Iceland";
 
 void setup() {
   
@@ -49,7 +49,7 @@ void setup() {
   
   for(int i = 0; i < 10; i++) 
   {
-    cl.add(new Connect(random(-width/2,width+width/2),random(-height/2,height+height/2),id,(int)random(200,500))); 
+    cl.add(new Connect(random(-width/2,width+width/2),random(-height/2,height+height/2),id,(int)random(100,700))); 
     id++;
   }
     
@@ -57,7 +57,8 @@ void setup() {
 
 void draw() {
   
-  background(darkestColor);
+  //background(darkestColor);
+  background(0);
   
   if(dosave) 
   {
