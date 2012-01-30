@@ -25,10 +25,10 @@ class Connect {
       
       if(c.id != id) {
         
-        noFill();
-        
         int col = (int)random(0,4);
-        stroke(kt[0].getColor(col),15);
+        
+        noFill();
+        stroke(kt[0].getColor(col),50);
         strokeWeight(.1);
         
         float distance = PVector.dist(pos,c.pos) / 1000;
@@ -48,7 +48,7 @@ class Connect {
           bezier(pos.x, pos.y, cp1y, cp1y, cp2y, cp2y, c.pos.x, c.pos.y);
           
           //addMove += random(-15,15);
-          distance += random(-5,5);
+          distance += random(-10,10);
                     
         }
       }
