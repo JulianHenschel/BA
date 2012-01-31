@@ -18,9 +18,9 @@ KulerTheme[]  kt;
 int           darkestColor;
 int           lightestColor;
 
-float         maxPopulation = 0;
-float         maxSpace = 0;
-float         maxSpacePop = 0;
+float         maxPopulation;
+float         maxSpace;
+float         maxSpacePop;
 
 void setup() {
   
@@ -80,9 +80,7 @@ void draw() {
   
   cl.clear();
   
-  /*
-  println("search color for: "+csv[curCountry][0]);
-  */
+  /* ---------------------------------------------------------------------------- */
   
   kt = k.search(csv[curCountry][0], "title");
   
@@ -95,8 +93,8 @@ void draw() {
   float space = Float.parseFloat(csv[curCountry][1]);
   float spacePop = Float.parseFloat(csv[curCountry][3]);
   
-  float xCount = map(population, 0, maxPopulation, 0, width);
-  float yCount = map(population, 0, maxPopulation, 0, height);
+  //float xCount = map(population, 0, maxPopulation, 0, width);
+  //float yCount = map(population, 0, maxPopulation, 0, height);
   
   float pointCount = map(space, 0, maxSpace, 10, 25);
   float lineCount = map(spacePop, 0, maxSpacePop, 100, 600);
@@ -120,7 +118,7 @@ void draw() {
     
   /* ---------------------------------------------------------------------------- */
   
-  background(120);
+  background(255);
   
   /* ---------------------------------------------------------------------------- */
   
@@ -155,6 +153,17 @@ void draw() {
   
   /* ---------------------------------------------------------------------------- */
   
+  /*
+  curCountry++;
+    
+  if(curCountry > csv.length-1) 
+  {
+    exit();
+  }
+  */
+  
+  /* ---------------------------------------------------------------------------- */
+  
 }
 
 void drawTextInformations() {
@@ -166,19 +175,24 @@ void drawTextInformations() {
   
 }
 
+/* ---------------------------------------------------------------------------- */
+
 void keyPressed() 
 {
+  
   if (key == ' ') 
   {  
+    loop();
+    
     curCountry++;
     
     if(curCountry > csv.length-1) 
     {
-      curCountry = 0;
+      exit();
     }
-
-    loop();
   }
+  
+  /* ---------------------------------------------------------------------------- */
   
   if (key == 's') 
   { 
