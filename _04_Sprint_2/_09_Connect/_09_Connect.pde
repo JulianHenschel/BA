@@ -93,8 +93,8 @@ void draw() {
   float space = Float.parseFloat(csv[curCountry][1]);
   float spacePop = Float.parseFloat(csv[curCountry][3]);
   
-  //float xCount = map(population, 0, maxPopulation, 0, width);
-  //float yCount = map(population, 0, maxPopulation, 0, height);
+  float xCount = map(population, 0, maxPopulation, 0, width);
+  float yCount = map(population, 0, maxPopulation, 0, height);
   
   float pointCount = map(space, 0, maxSpace, 10, 25);
   float lineCount = map(spacePop, 0, maxSpacePop, 100, 600);
