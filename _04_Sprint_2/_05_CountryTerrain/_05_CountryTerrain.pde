@@ -27,7 +27,7 @@ void setup() {
   textFont(myFont);
   
   k = new Kuler(this);
-  k.setKey("D8499719CCFCD92F468F2BADDAEA4BDC");
+  k.setKey(kulerAPIKey);
   k.setNumResults(1);
   
   kt = k.search(country, "title");
