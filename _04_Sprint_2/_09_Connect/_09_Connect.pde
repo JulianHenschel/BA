@@ -18,8 +18,8 @@ KulerTheme[]  kt;
 int           darkestColor;
 int           lightestColor;
 
-float         maxPopulation;
-float         maxSpace;
+float         maxPopulation, totalPop;
+float         maxSpace, totalSpace;
 float         maxSpacePop;
 
 void setup() {
@@ -52,6 +52,11 @@ void setup() {
   
   for(int i = 0; i < csv.length; i++) 
   {
+    
+    //totals
+    totalPop += Float.parseFloat(csv[i][2]);
+    totalSpace += Float.parseFloat(csv[i][1]);
+    
     if(maxPopulation < Float.parseFloat(csv[i][2])) 
     {
       maxPopulation = Float.parseFloat(csv[i][2]);
@@ -108,11 +113,9 @@ void draw() {
   for(int i = 0; i < (int)pointCount; i++) 
   {
     cl.add(new Connect(
-                       random(-width/2,width+(width/2)),
-                       random(-height/2,height+height/2),
+                       random(-width/2,width+(width/2)), random(-height/2,height+height/2),
                        id,
-                       (int)random(lineCount-(lineCount/5),lineCount+(lineCount/5)))
-                       ); 
+                       (int)random(lineCount-(lineCount/5),lineCount+(lineCount/5)) ) ); 
     id++;
   }
     
@@ -137,7 +140,7 @@ void draw() {
     
   /* ---------------------------------------------------------------------------- */
   
-  //drawTextInformations();
+  drawTextInformations();
   
   /* ---------------------------------------------------------------------------- */
   
@@ -168,10 +171,46 @@ void draw() {
 
 void drawTextInformations() {
   
-  textSize(50);
-  fill(darkestColor);
+  myFont = loadFont("MyriadPro-Regular-48.vlw");
+  textFont(myFont);
+  
   textAlign(LEFT);
-  text(csv[curCountry][0].toUpperCase(), 50, height-50);
+  
+  // poster title
+  textSize(8);
+  fill(0);
+  text("Forms of Europe".toUpperCase(), 30, height-64);
+  
+  // poster text
+  textSize(6);
+  fill(0);
+  String txt = "Dieses Poster wurde vollkommen dynamisch aus demografischen Daten dieses Landes generiert. Es soll die Einzigartigkeit des Landes und anhand der Farbstimmung Gefühl und Stimmung der Bevölkerung darstellen.";
+  text(txt.toUpperCase(), 130, height-70, 230, 100);
+  
+  myFont = loadFont("MyriadPro-Bold-48.vlw");
+  textFont(myFont);
+  
+  // country name
+  textSize(14);
+  fill(darkestColor);
+  text(csv[curCountry][0].toUpperCase(), 30, height-49);
+  
+  drawStatistic(130, height-35, 70, 10, Float.parseFloat(csv[curCountry][2]), maxPopulation);
+  drawStatistic(210, height-35, 70, 10, Float.parseFloat(csv[curCountry][1]), maxSpace);
+  
+}
+
+void drawStatistic(float x, float y, float w, float h, float v, float vMax) {
+  
+  noStroke();
+  
+  fill(200);
+  rect(x,y,w,h);
+  
+  float mappedWidth = map(v,0,vMax,0,w);
+  
+  fill(darkestColor);
+  rect(x,y,mappedWidth,h);
   
 }
 
