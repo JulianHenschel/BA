@@ -72,7 +72,6 @@ void draw() {
   
   // define database
   
-  //float w = map(Integer.parseInt(csv[curCountry][1]),0,674843,0,width);
   //float h = map(Integer.parseInt(csv[curCountry][1]),0,674843,0,height);
   
   //float c = map(Integer.parseInt(csv[curCountry][3]),0,229,0,100);
