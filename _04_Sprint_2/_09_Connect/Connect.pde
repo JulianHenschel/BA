@@ -28,7 +28,7 @@ class Connect {
         int col = (int)random(0,4);
         
         noFill();
-        stroke(kt[0].getColor(col),50);
+        stroke(kt[0].getColor(col),80);
         strokeWeight(.1);
         
         float distance = PVector.dist(pos,c.pos) / 1000;
@@ -47,6 +47,8 @@ class Connect {
           
           bezier(pos.x, pos.y, cp1y, cp1y, cp2y, cp2y, c.pos.x, c.pos.y);
           
+          totalRenderedLines++;
+          
           //addMove += random(-15,15);
           distance += random(-10,10);
                     
@@ -56,7 +58,7 @@ class Connect {
     }
     
     drawCenter();
-    
+        
     println("rendered id "+id+": "+steps+" lines");
     
   }

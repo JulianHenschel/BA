@@ -6,7 +6,7 @@ import processing.pdf.*;
 int           id = 0;
 int           curCountry = 0;
 
-boolean       dosave = false;
+boolean       dosave = true;
 ArrayList     cl;
 String[][]    csv;
 
@@ -22,11 +22,13 @@ float         maxPopulation, totalPop;
 float         maxSpace, totalSpace;
 float         maxSpacePop;
 
+float         totalRenderedLines, totalRenderedKnots;
+
 void setup() {
   
   /* ---------------------------------------------------------------------------- */
   
-  size(600,800);
+  size(595,842);
   smooth();
   
   /* ---------------------------------------------------------------------------- */
@@ -71,12 +73,6 @@ void setup() {
     }
   }
   
-  /*
-  println("*** max population: "+maxPopulation);
-  println("*** max space: "+maxSpace);
-  println("*** max spacePop: "+maxSpacePop);
-  */
-  
   /* ---------------------------------------------------------------------------- */
   
 }
@@ -98,24 +94,32 @@ void draw() {
   float space = Float.parseFloat(csv[curCountry][1]);
   float spacePop = Float.parseFloat(csv[curCountry][3]);
   
-  float xCount = map(population, 0, maxPopulation, 0, width);
-  float yCount = map(population, 0, maxPopulation, 0, height);
+  float xCount = map(space, 0, maxSpace, 0, width);
+  float yCount = map(space, 0, maxSpace, 0, height);
   
-  float pointCount = map(space, 0, maxSpace, 10, 25);
-  float lineCount = map(spacePop, 0, maxSpacePop, 100, 600);
+  float pointCount = map(space, 0, maxSpace, 5, 25);
+  float lineCount = map(population, 0, maxPopulation, 100, 1000);
   
+  totalRenderedKnots += pointCount;
+  
+  /*
   println("Mapped spacePop count: "+pointCount);
   println("Mapped line count: "+lineCount);
   println("x-range: "+xCount);
+  */
+  
+  println("render: "+csv[curCountry][0]);
   
   /* ---------------------------------------------------------------------------- */
+  
+  float multFactor = 7;
   
   for(int i = 0; i < (int)pointCount; i++) 
   {
     cl.add(new Connect(
-                       random(-width/2,width+(width/2)), random(-height/2,height+height/2),
+                       random(-xCount*multFactor,xCount*multFactor), random(-yCount*multFactor,yCount*multFactor),
                        id,
-                       (int)random(lineCount-(lineCount/5),lineCount+(lineCount/5)) ) ); 
+                       (int)random(lineCount-(lineCount/multFactor),lineCount+(lineCount/multFactor)) ) ); 
     id++;
   }
     
@@ -132,11 +136,16 @@ void draw() {
   
   /* ---------------------------------------------------------------------------- */
   
+  pushMatrix();
+  translate(width/2,height/2);
+  
   for(int i = 0; i < cl.size(); i++) 
   {  
     Connect c = (Connect)cl.get(i);
     c.draw();
   }
+  
+  popMatrix();
     
   /* ---------------------------------------------------------------------------- */
   
@@ -147,23 +156,28 @@ void draw() {
   if(dosave) 
   {
     endRecord();
-    dosave=false;
+    //dosave=false;
   }
   
   /* ---------------------------------------------------------------------------- */
   
-  noLoop();
+  //noLoop();
   
   /* ---------------------------------------------------------------------------- */
   
-  /*
+  
   curCountry++;
     
   if(curCountry > csv.length-1) 
   {
+    
+    println("***done***");
+    println("rendered lines: "+ totalRenderedLines);
+    println("rendered knots: "+ totalRenderedKnots);
+    
     exit();
   }
-  */
+  
   
   /* ---------------------------------------------------------------------------- */
   
@@ -179,13 +193,13 @@ void drawTextInformations() {
   // poster title
   textSize(8);
   fill(0);
-  text("Forms of Europe".toUpperCase(), 30, height-64);
+  text("European diversity".toUpperCase(), 30, height-54);
   
   // poster text
   textSize(6);
   fill(0);
-  String txt = "Dieses Poster wurde vollkommen dynamisch aus demografischen Daten dieses Landes generiert. Es soll die Einzigartigkeit des Landes und anhand der Farbstimmung Gefühl und Stimmung der Bevölkerung darstellen.";
-  text(txt.toUpperCase(), 130, height-70, 230, 100);
+  String txt = "This poster is dynamically generated from this country’s demographics. It interprets visually the unique mood by color, population size and area to present the diversity of Europe to the viewer.";
+  text(txt.toUpperCase(), 130, height-60, 230, 100);
   
   myFont = loadFont("MyriadPro-Bold-48.vlw");
   textFont(myFont);
@@ -193,14 +207,14 @@ void drawTextInformations() {
   // country name
   textSize(14);
   fill(darkestColor);
-  text(csv[curCountry][0].toUpperCase(), 30, height-49);
+  text(csv[curCountry][0].toUpperCase(), 30, height-39);
   
-  drawStatistic(130, height-35, 70, 10, Float.parseFloat(csv[curCountry][2]), maxPopulation);
-  drawStatistic(210, height-35, 70, 10, Float.parseFloat(csv[curCountry][1]), maxSpace);
+  //drawStatistic(130, height-45, 70, 10, Float.parseFloat(csv[curCountry][2]), maxPopulation, "Polulation");
+  //drawStatistic(210, height-45, 70, 10, Float.parseFloat(csv[curCountry][1]), maxSpace, "Space");
   
 }
 
-void drawStatistic(float x, float y, float w, float h, float v, float vMax) {
+void drawStatistic(float x, float y, float w, float h, float v, float vMax, String title) {
   
   noStroke();
   
@@ -211,6 +225,15 @@ void drawStatistic(float x, float y, float w, float h, float v, float vMax) {
   
   fill(darkestColor);
   rect(x,y,mappedWidth,h);
+  
+  myFont = loadFont("MyriadPro-Regular-48.vlw");
+  textFont(myFont);
+  
+  fill(100);
+  
+  textAlign(LEFT);
+  textSize(8);
+  text(title.toUpperCase(), x, y+15, w, 50);
   
 }
 
