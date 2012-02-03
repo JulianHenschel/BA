@@ -12,11 +12,15 @@ Line2D[]         ls;
 Palette[]        pl;
 
 String[][] csv;
-int        count = 20;
+int        count = 10;
 boolean    dosave = false;
 ArrayList  al;
 PFont      myFont;
 int        curCountry = 0;
+
+float         maxPopulation, totalPop;
+float         maxSpace, totalSpace;
+float         maxSpacePop;
 
 void setup() {
   
@@ -28,7 +32,6 @@ void setup() {
   k = new Kuler(this);
   k.setKey(kulerAPIKey);
   k.setNumResults(1);
-  
   
   /* ---------------------------------------------------------------------------- */
 
@@ -56,32 +59,60 @@ void setup() {
     }
   }
   
-  
-  
   /* ---------------------------------------------------------------------------- */
   
   al = new ArrayList();
   
   /* ---------------------------------------------------------------------------- */
   
+  for(int i = 0; i < csv.length; i++) 
+  {
+    
+    //totals
+    totalPop += Float.parseFloat(csv[i][2]);
+    totalSpace += Float.parseFloat(csv[i][1]);
+    
+    if(maxPopulation < Float.parseFloat(csv[i][2])) 
+    {
+      maxPopulation = Float.parseFloat(csv[i][2]);
+    }
+    if(maxSpace < Float.parseFloat(csv[i][1])) 
+    {
+      maxSpace = Float.parseFloat(csv[i][1]);
+    }
+    if(maxSpacePop < Float.parseFloat(csv[i][3])) 
+    {
+      maxSpacePop = Float.parseFloat(csv[i][3]);
+    }
+  }
+  
 }
  
 void draw() {
-  
+    
   /* ---------------------------------------------------------------------------- */
-  
+    
   // define database
   
-  //float h = map(Integer.parseInt(csv[curCountry][1]),0,674843,0,height);
+  float population = Float.parseFloat(csv[curCountry][2]);
+  float space = Float.parseFloat(csv[curCountry][1]);
+  float spacePop = Float.parseFloat(csv[curCountry][3]);
   
-  //float c = map(Integer.parseInt(csv[curCountry][3]),0,229,0,100);
+  float xCount = map(space, 0, maxSpace, 0, width);
+  float yCount = map(space, 0, maxSpace, 0, height);
   
-  count = 50;
+  float pointCount = map(space, 0, maxSpace, 5, 50);
+  float lineCount = map(population, 0, maxPopulation, 100, 1000);
   
+  count = (int)pointCount;
+    
   ls = new Line2D[count];
   
+  float multFactor = 2;
+  
   for(int i = 0; i < count; i++) {
-    ls[i] = new Line2D(new Vec2D(random(0,width),random(0,height)),new Vec2D(random(0,width),random(0,height)));
+    ls[i] = new Line2D(new Vec2D(random(-xCount*multFactor,xCount*multFactor), random(-yCount*multFactor,yCount*multFactor)),
+                       new Vec2D(random(-xCount*multFactor,xCount*multFactor), random(-yCount*multFactor,yCount*multFactor)));
   }
   
   /* ---------------------------------------------------------------------------- */
@@ -92,6 +123,7 @@ void draw() {
   /* ---------------------------------------------------------------------------- */
   
   background(lightestColor);
+  //background(255);
   
   /* ---------------------------------------------------------------------------- */
   
@@ -131,6 +163,10 @@ void draw() {
   /* ---------------------------------------------------------------------------- */
   
   // draw areas
+  
+  pushMatrix();
+  translate(width/2,height/2);
+  
   for(int i = 0; i < al.size(); i++) {
     
     PVector p = (PVector)al.get(i);
@@ -152,13 +188,16 @@ void draw() {
     for (int j = al.size()-1; j >= 0; j--) {
     
       PVector a = (PVector)al.get(j);
-      
+            
       if(a.x == p.x && a.y == p.y) {
         al.remove(j);  
       }
     }
     
   }
+  
+  popMatrix();
+  
   
   /* ---------------------------------------------------------------------------- */
   
@@ -171,8 +210,8 @@ void draw() {
   
   /* ---------------------------------------------------------------------------- */
   
-  textSize(50);
-  fill(lightestColor);
+  textSize(30);
+  fill(darkestColor);
   textAlign(CENTER);
   text(csv[curCountry][0].toUpperCase(), width/2, height/2);
   
@@ -194,10 +233,6 @@ void keyPressed() {
   if (key == ' ') {
     
     loop();
-    
-    for(int i = 0; i < count; i++) {
-      ls[i] = new Line2D(new Vec2D(random(0,width),random(0,height)),new Vec2D(random(0,width),random(0,height)));
-    }
     
     al.clear();
     
