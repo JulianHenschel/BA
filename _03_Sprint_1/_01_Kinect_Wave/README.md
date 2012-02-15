@@ -1,3 +1,10 @@
-# KINECT WAVE
+# ROTATING RECTANGLES
 
-![kinect_Wave](https://github.com/JulianHenschel/BA/raw/master/_03_Sprint_1/_01_Kinect_Wave/preview/preview.jpg)
+Beschreibung und weitere Bilder:
+http://ba.julianhenschel.de/code/rotating-rectangles/
+
+## BILDER
+
+![s1](http://ba.julianhenschel.de/wp-content/uploads/2012/02/MG_1830.jpg)
+
+![s1](http://ba.julianhenschel.de/wp-content/uploads/2012/02/MG_1940.jpg)
