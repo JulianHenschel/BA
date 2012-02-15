@@ -1,7 +1,7 @@
-# SPHERE LIGHT
+# FALLING PIXELS
 
 Beschreibung und weitere Bilder:
-http://ba.julianhenschel.de/code/spherelight/
+http://ba.julianhenschel.de/code/falling-pixels/
 
 ## BILDER
 
