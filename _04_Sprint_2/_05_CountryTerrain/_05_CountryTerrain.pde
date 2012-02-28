@@ -10,7 +10,7 @@ int              steps = 600;
 int              darkestColor;
 int              lightestColor;
 
-String           country = "china";
+String           country = "France";
 
 boolean          dosave = false;
 
@@ -42,30 +42,32 @@ void draw() {
   
   float noiseMult = random(80,200);
   
-  background(darkestColor);
+  //background(darkestColor);
+  background(255);
   
   if(dosave) {
     
     beginRecord(PDF, "output/"+country+"-"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf");
-    noStroke();
-    fill(darkestColor);
-    rect(0,0,width,height);
-    
+    //noStroke();
+    //fill(darkestColor);
+    //rect(0,0,width,height);
   }
   
   float noiseScale = 0.02;
   
+  /*
   textSize(50);
   fill(lightestColor);
   textAlign(CENTER);
   text(country.toUpperCase(), width/2, height-80);
+  */
   
   float s = height/steps;
   
-  for(int y = 50; y < height-250; y+=s) {
+  for(int y = 50; y < height-150; y+=s) {
     
     noFill();
-    strokeWeight(1);
+    strokeWeight(.5);
     stroke(0);
     
     //beginShape();
