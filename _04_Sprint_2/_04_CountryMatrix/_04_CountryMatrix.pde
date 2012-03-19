@@ -10,7 +10,7 @@ Matrix        m2;
 
 PFont         myFont;
 boolean       dosave = false;
-String        country = "Germany";
+String        country = "Swiss";
 
 int           darkestColor;
 int           lightestColor;
@@ -37,6 +37,8 @@ void setup() {
 
 void draw() {
   
+  background(lightestColor);
+  
   if(dosave) {
     
     beginRecord(PDF, "output/"+year()+month()+day()+"-"+hour()+minute()+second()+".pdf");
@@ -46,12 +48,10 @@ void draw() {
     
   }
   
-  background(lightestColor);
-  
   textSize(118);
   fill(darkestColor);
   textAlign(CENTER);
-  text(country.toUpperCase(), width/2, height/2);
+  //text(country.toUpperCase(), width/2, height/2);
   
   m.draw();
   

@@ -2,12 +2,12 @@ import processing.pdf.*;
 import processing.opengl.*;
 import generativedesign.*;
 
-int       nodeCount = 2200;
+int       nodeCount = 10000;
 int       attrRadius = 150;
 int       attraction = -50;
 
 boolean   dosave = false;
-color     bg = color(0);
+color     bg = color(255);
 PFont     myFont;
 
 String    txt = "YOU FRIGHTEN THE ANIMALS. HOLD ON!";
@@ -70,7 +70,7 @@ void draw() {
   textSize(22);
   
   textAlign(CENTER);
-  text(txt,attr.x-(150/2),attr.y-75,150,140);
+  //text(txt,attr.x-(150/2),attr.y-75,150,140);
   
   /* ---------------------------------------------------------------------------- */
   
@@ -86,6 +86,7 @@ void draw() {
     
     float distance = dist(mouseX,mouseY,nodeList[i].x,nodeList[i].y);
     
+    /*
     if(distance < attrRadius*2) 
     {
       
@@ -108,6 +109,10 @@ void draw() {
       ellipse(nodeList[i].x,nodeList[i].y,10,10);
       
     }
+    */
+    
+    stroke(0);
+    point(nodeList[i].x,nodeList[i].y);
     
   }
   
